@@ -1,4 +1,10 @@
 <?php
+/*
+ * @Author: Jeay 
+ * @Date: 2017-06-23 17:31:26 
+ * @Last Modified by:   Jeay 
+ * @Last Modified time: 2017-06-23 17:31:26 
+ */
 define("WEBROOT",$_SERVER['DOCUMENT_ROOT']);
 define("CMSPATH",dirname(__FILE__));
 // 自动加载
@@ -7,6 +13,7 @@ function __autoload($className) {
 	include CMSPATH."/lib/" . strtolower ( $className ) . ".class.php";
 }
 if (!file_exists(WEBROOT."/config.php")) {
+    //进入安装页面
     include CMSPATH."/install.inc.php";
 }
 //;
