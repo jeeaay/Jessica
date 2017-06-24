@@ -46,13 +46,13 @@
                 $post["keywordFilesName"] = "" ;                
                 foreach (explode(" ",trim($_POST["keywordFilesName"])) as  $value) {
                     if (is_file(WEBROOT."/data/".trim($value))) {
-                        $post["keywordFilesName"] = $post["keywordFilesName"].trim($value).',';
+                        $post["keywordFilesName"] = $post["keywordFilesName"].'"'.trim($value).'",';
                     }else{
                         echo json_encode(["status"=>"error","msg"=>"文件".trim($value)."不存在，请检查后再试"]);
                         exit;
                     }
                 }
-                $keywordFilesName =  "[".rtrim($keywordFilesName,",")."]";
+                $post["keywordFilesName"] =  "[".rtrim($post["keywordFilesName"],",")."]";
             }
             //url中添加title
             $post["urlTitle"] = isset($_POST["urlTitle"])?  "true" : "false";
