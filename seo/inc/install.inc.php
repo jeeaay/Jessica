@@ -32,7 +32,7 @@
             //描述
             $post["indexDescription"] = empty(trim($_POST["indexDescription"])) ? "false" : "'".trim($_POST["indexDescription"])."'";
             //每页文章数
-            $post["postsNum"] = empty(trim($_POST["postsNum"])) ? 20 : (int)trim($_POST["postsNum"]);
+            $post["postsNum"] = empty($_POST["postsNum"]) ? 20 : (int)trim($_POST["postsNum"]);
             //模板
             if(empty($_POST["tempName"])){
                 echo json_encode(["status"=>"error","msg"=>"必须选择模板！"]);
@@ -61,11 +61,7 @@
                 echo json_encode(["status"=>"error","msg"=>"栏目标题不能为空！"]);
                 exit;
             }
-            $post["cateTitle"] = "";
-            foreach ($_POST["cateTitle"] as $v) {
-                $post["cateTitle"] = $post["cateTitle"].'"'.$v.'",';
-            }
-            $post["cateTitle"] =  "[".rtrim($post["cateTitle"],",")."]";
+            $post["cateTitle"] = trim($_POST["cateTitle"]);
             //开始创建配置文件
             $conffile=file_get_contents(CMSPATH."/inc/config.simple.php");
 			$pattern=array(

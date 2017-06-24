@@ -155,7 +155,7 @@
               <li>
                 <div class="item-content">
                   <div class="item-inner">
-                    <div class="item-title label"><?=$value?></div>
+                    <div class="item-title label db-cate-name"><?=$value?></div>
                     <div class="item-input">
                       <input class="cateTitle" type="text" data-value="<?=$value?>" placeholder="<?=$value?>">
                     </div>
@@ -252,10 +252,16 @@
           if($("#urlTitle:checked").val()){
             data.urlTitle=$("#urlTitle:checked").val();
           }
-          data.cateTitle = [];
-          $(".cateTitle").each(function () { 
-             data.cateTitle.push($(this).val()=="" || $(this).val()==undefined ? $(this).attr("data-value") : $(this).val());
+          data.cateTitle = "";
+          $(".cateTitle").each(function (index) {
+            var val = $(this).val()=="" || $(this).val()==undefined ? $(this).attr("data-value") : $(this).val();
+            if (data.cateTitle == "") {
+              data.cateTitle = "'"+$(".db-cate-name").eq(index).html()+"' => '"+val+"'";
+            }else{
+              data.cateTitle = data.cateTitle + " , '"+$(".db-cate-name").eq(index).html()+"' => '"+val+"'";
+            }
           });
+          data.cateTitle = "[" + data.cateTitle + "]";
           $.post(location.href, data,
             function (data, textStatus, jqXHR) {
               if(data.status=="success"){
