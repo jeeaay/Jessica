@@ -14,29 +14,16 @@ class Result extends SQLite
         $this->config = $config;
         $this->type = $type;
     }
-    private function CateList(String $dbName = "", Int $page = 0, Int $postsNum = 20)
+    private function CateList( Int $page = 0, Int $postsNum = 20)
     {
         if (is_numeric($this->config["postsNum"])) {
             $postsNum = $this->config["postsNum"];
         }
-        if ($dbName=="" || !is_file($dbName)) {
-            return 404;
-        }
-        try{
-            $this->connection=new PDO('sqlite:'.$dbName);
-        }catch(PDOException $e){
-            exit ("数据库错误！".$e);
-        }
         $sql = 'select * from Content order by id desc limit '.$postsNum.' offset '.$page*$postsNum;
         return $this->getlist($sql);
     }
-    private function Pages(String $dbName = "", Int $page = 0, Int $postsNum = 20)
+    private function Pages( Int $page = 0, Int $postsNum = 20)
     {
-        try{
-            $this->connection=new PDO('sqlite:'.$dbName);
-        }catch(PDOException $e){
-            exit ("数据库错误！".$e);
-        }
         //计算分页数量
         $sql="select ID from Content";
         $totalPosts=$this->RecordCount($sql);//总文章数
@@ -94,11 +81,15 @@ class Result extends SQLite
     {
         $cateDB = str_replace("-"," ",urldecode($this->type["cate"]));
         $dbName = WEBROOT."/data/".$cateDB.".db";
-        if(($list = $this->CateList($dbName,$this->type["page"])) == "404"){
+        if ( !is_file($dbName) ) {
+            return 404;
+        }
+        parent::__construct($dbName);
+        if(($list = $this->CateList($this->type["page"])) == "404"){
             return 404;
         }else{
             $title = $this->config["cateTitle"][$cateDB];
-            $pages = $this->Pages($dbName,$this->type["page"]);
+            $pages = $this->Pages($this->type["page"]);
             require TMPPATH."/".$this->config["tempName"]."/category.html";
         }
         exit;
