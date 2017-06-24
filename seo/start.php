@@ -3,7 +3,7 @@
  * @Author: Jeay 
  * @Date: 2017-06-23 17:31:26 
  * @Last Modified by: Jeay
- * @Last Modified time: 2017-06-24 13:53:06
+ * @Last Modified time: 2017-06-24 13:57:16
  */
 define("WEBROOT",$_SERVER['DOCUMENT_ROOT']);
 define("CMSPATH",dirname(__FILE__));
@@ -27,6 +27,7 @@ if (!file_exists(WEBROOT."/config.php")) {
         $common->NotFound();
     }
     //展示内容
+    $result = new Result($config,$router->Classify());
     var_dump($router->Classify()) ;
 }
 
