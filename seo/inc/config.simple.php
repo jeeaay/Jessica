@@ -15,6 +15,8 @@ $config = [
     "indexDescription" => "",
     //模板名
     "tempName" => "",
+    //列表页每页显示数量
+    "postsNum" => "",
     //是否在url中显示标题
     "urlTitle" => "",
     //是否在标题后面添加随机关键词

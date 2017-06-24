@@ -59,6 +59,16 @@
               <li>
                 <div class="item-content">
                   <div class="item-inner">
+                    <div class="item-title label">每页条数</div>
+                    <div class="item-input">
+                      <input id="postsNum" type="text" placeholder="列表每页显示的文章数量，默认20">
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
                     <div class="item-title label">模板</div>
                     <div class="item-input">
                       <input id="tempName" type="text" placeholder="点击下面选取一个模板">
@@ -235,6 +245,7 @@
             "tempName":$("#tempName").val(),
             "keywordFilesName":$("#keywordFilesName").val()
           }
+          $("#postsNum").val()==undefined || $("#postsNum").val()=="" ? false : data.postsNum = $("#postsNum").val();
           if($("#keywordFileSwitch:checked").val()){
             data.keywordFileSwitch=$("#keywordFileSwitch:checked").val();
           }

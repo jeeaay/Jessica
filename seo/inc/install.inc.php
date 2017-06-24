@@ -23,23 +23,16 @@
             }
             //标题
             if(empty($_POST["webTitle"])){
-                
                 echo json_encode(["status"=>"error","msg"=>"标题不能为空！"]);
                 exit;
             }
             $post["webTitle"] = trim($_POST["webTitle"]);
             //关键词
-            if(empty(trim($_POST["indexKeyword"]))){
-                $post["indexKeyword"] = "false";
-            }else{
-                $post["indexKeyword"] = "'".trim($_POST["indexKeyword"])."'";
-            }
+            $post["indexKeyword"] = empty(trim($_POST["indexKeyword"])) ? "false" : "'".trim($_POST["indexKeyword"])."'"; 
             //描述
-            if(empty(trim($_POST["indexDescription"]))){
-                $post["indexDescription"] = "false";
-            }else{
-                $post["indexDescription"] = "'".trim($_POST["indexDescription"])."'";                
-            }
+            $post["indexDescription"] = empty(trim($_POST["indexDescription"])) ? "false" : "'".trim($_POST["indexDescription"])."'";
+            //每页文章数
+            $post["postsNum"] = empty(trim($_POST["postsNum"])) ? 20 : (int)trim($_POST["postsNum"]);
             //模板
             if(empty($_POST["tempName"])){
                 echo json_encode(["status"=>"error","msg"=>"必须选择模板！"]);
@@ -81,6 +74,7 @@
                 "/([\"|\']cateTitle[\"|\'])([^,]+),/i",
                 "/([\"|\']indexKeyword[\"|\'])([^,]+),/i",
                 "/([\"|\']indexDescription[\"|\'])([^,]+),/i",
+                "/([\"|\']postsNum[\"|\'])([^,]+),/i",
                 "/([\"|\']tempName[\"|\'])([^,]+),/i",
                 "/([\"|\']urlTitle[\"|\'])([^,]+),/i",
                 "/([\"|\']keywordFileSwitch[\"|\'])([^,]+),/i",
@@ -92,6 +86,7 @@
                 "$1 => ".$post["cateTitle"].",",
                 "$1 => ".$post["indexKeyword"].",",
                 "$1 => ".$post["indexDescription"].",",
+                "$1 => ".$post["postsNum"].",",
                 "$1 => ".$post["tempName"].",",
                 "$1 => ".$post["urlTitle"].",",
                 "$1 => ".$post["keywordFileSwitch"].",",
