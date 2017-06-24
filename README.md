@@ -1,5 +1,5 @@
 # seo内容管理系统
-`a smarty systeam whithout Smarty`
+`a smart systeam whithout Smarty`
 ## 1. 环境搭建
 
 ## 2. 数据库处理
