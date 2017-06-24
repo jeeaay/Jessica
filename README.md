@@ -1,9 +1,17 @@
 # seo
 ## 标签
 ### 首页
-首页标题
+首页的标题
 ```php
 <?=$this->config["webTitle"]?>
+```
+首页的关键词
+```php
+<?=$this->config["indexKeyword"]?>
+```
+首页的描述
+```php
+<?=$this->config["indexDescription"]?>
 ```
 栏目列表（样式、html部分可以自行修改）
 ```php
