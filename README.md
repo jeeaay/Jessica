@@ -1,5 +1,11 @@
-# seo
-## 标签
+# seo内容管理系统
+`a smarty systeam whithout Smarty`
+## 1. 环境搭建
+
+## 2. 数据库处理
+
+
+## 3. 标签
 ### 首页
 首页的标题
 ```php
