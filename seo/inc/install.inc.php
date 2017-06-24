@@ -1,16 +1,16 @@
 <?php
     if(!is_dir(WEBROOT."/data")){
-        require "config.tips.php";
+        require CMSPATH."/inc/config.tips.php";
     }else{
         $document = new Document(WEBROOT."/data");
         if (empty($document->Search("db"))) {
-            require "config.tips.php";
+            require CMSPATH."/inc/config.tips.php";
             exit;
         } 
         if (!isset($_POST["webTitle"])) {
             $keyList = $document->Search("txt");
             $dbList = $document->Search("db");
-            require "config.init.php";
+            require CMSPATH."/inc/config.init.php";
         }
         else{
             // 返回json类型
@@ -67,7 +67,7 @@
             }
             $post["cateTitle"] =  "[".rtrim($post["cateTitle"],",")."]";
             //开始创建配置文件
-            $conffile=file_get_contents(CMSPATH."/config.simple.php");
+            $conffile=file_get_contents(CMSPATH."/inc/config.simple.php");
 			$pattern=array(
                 "/(Modified time:)[^\n]+/i",
                 "/([\"|\']webTitle[\"|\'])([^,]+),/i",
