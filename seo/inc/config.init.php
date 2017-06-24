@@ -11,7 +11,10 @@
 
     <link rel="stylesheet" href="https://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="https://g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
-
+    <style>
+    .buttons .button.active {background-color: #0894ec;color: #fff;z-index: 90;}
+    .buttons .button{margin:1px}
+    </style>
   </head>
   <body>
     <div class="page-group">
@@ -56,6 +59,32 @@
               <li>
                 <div class="item-content">
                   <div class="item-inner">
+                    <div class="item-title label">模板</div>
+                    <div class="item-input">
+                      <input id="tempName" type="text" placeholder="点击下面选取一个模板">
+                    </div>
+                  </div>
+                </div>
+                <div class="content-block" style="margin:0">
+                  <p class="buttons" style="margin:0;display: flex;flex-wrap: wrap;">
+                    <?php 
+                    if(is_array($tempList) && !empty($tempList)){
+                      foreach ($tempList as $value){ 
+                    ?>
+                    <a href="#" class="button select-temp"><?=$value?></a>
+                    <?php } 
+                    }else{
+                    ?>
+                    请先模板文件放入<?=TMPPATH?>/模板名/目录中
+                    <?php
+                    }
+                    ?>
+                  </p>
+                </div>
+              </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
                     <div class="item-title label">url包含标题</div>
                     <div class="item-input">
                       <label class="label-switch">
@@ -89,7 +118,7 @@
                   </div>
                 </div>
                 <div class="content-block" style="margin:0">
-                  <p class="buttons-row"  style="margin:0;padding-bottom:1rem">
+                  <p class="buttons-row"  style="margin:0;">
                     <?php 
                     if(is_array($keyList) && !empty($keyList)){
                       foreach ($keyList as $value){ 
@@ -164,7 +193,13 @@
             $(".keyword-files").show();
           }
         });
-        // 选取
+        //选取模板
+        $(".select-temp").click(function (e) {
+          e.preventDefault();
+          $(this).addClass("active").siblings().removeClass("active");
+          $("#tempName").val($.trim($(this).html()));
+        });
+        // 选取附加关键词文件
         $(".select-key-files").click(function (e) { 
           e.preventDefault();
           if ($(this).hasClass("active")) {
@@ -185,6 +220,10 @@
             $.alert("必须有网站标题！");
             return false;
           }
+          if($("#tempName").val()==""){
+            $.alert("必须选择一个模板！");
+            return false;
+          }
           if($("#keywordFileSwitch:checked").val()!=undefined && $("#keywordFilesName").val()==""){
             $.alert("请输入文件名，多个文件用|分割");
             return false;
@@ -193,6 +232,7 @@
             "webTitle":$("#webTitle").val(),
             "indexKeyword":$("#indexKeyword").val(),
             "indexDescription":$("#indexDescription").val(),
+            "tempName":$("#tempName").val(),
             "keywordFilesName":$("#keywordFilesName").val()
           }
           if($("#keywordFileSwitch:checked").val()){

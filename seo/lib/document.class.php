@@ -3,7 +3,7 @@
  * @Author: Jeay 
  * @Date: 2017-06-23 11:30:13 
  * @Last Modified by: Jeay
- * @Last Modified time: 2017-06-23 13:41:14
+ * @Last Modified time: 2017-06-24 13:23:23
  * 检查指定后缀名的文件是否存在
  * 列出所有指定后缀名的文件
  */
@@ -14,18 +14,24 @@ class Document{
     public $extension="";
     function __construct(String $path = "")
     {
-        if(empty($path) || !is_dir($path)){
-            exit("需要指定目录");
+        if( !is_dir($path)){
+            exit("该参数需要需要指定一个目录");
         }
         $this->path=$path;
     }
-    public function AllList()
+    public function AllList(String $path = "")
     {
+        if ($path=="") {
+            $path =$this->path;
+        }
+        if( !is_dir($path)){
+            exit("该参数需要需要指定一个目录");
+        }
         $allList = [];
-        $list = scandir($this->path);
+        $list = scandir($path);
         foreach($list as $value){
             if (!preg_match("/^\.(.*)?/i" , $value)) {
-                if(is_dir($this->path."/".$value)){
+                if(is_dir($path."/".$value)){
                     $allList["dirs"][] = $value;
                 }else{
                     $allList["files"][] = $value;
@@ -34,24 +40,42 @@ class Document{
         }
         return $allList;
     }
-    public function AllFiles()
+    public function AllFiles(String $path = "")
     {
-        return $this->AllList()["files"];
+        if ($path=="") {
+            $path =$this->path;
+        }
+        if( !is_dir($path)){
+            exit("该参数需要需要指定一个目录");
+        }
+        return $this->AllList($path)["files"];
     }
-    public function AllDir()
+    public function AllDir(String $path = "")
     {
-        return $this->AllList()["dirs"];
+        if ($path=="") {
+            $path =$this->path;
+        }
+        if( !is_dir($path)){
+            exit("该参数需要需要指定一个目录");
+        }
+        return $this->AllList($path)["dirs"];
     }
     /*
     * 检查指定后缀名的文件是否存在
     * 列出所有指定后缀名的文件
     */
-    public function Search(String $extension = "")
+    public function Search(String $extension = "",String $path = "")
     {
+        if ($path=="") {
+            $path =$this->path;
+        }
+        if( !is_dir($path)){
+            exit("该参数需要需要指定一个目录");
+        }
         $files = [];
-        $list = scandir($this->path);
+        $list = scandir($path);
         foreach($list as $value){
-            if (!preg_match("/^\.(.*)?/i" , $value) && is_file($this->path."/".$value) && preg_match("/(.*)\.".$extension."/i",$value)) {
+            if (!preg_match("/^\.(.*)?/i" , $value) && is_file($path."/".$value) && preg_match("/(.*)\.".$extension."/i",$value)) {
                 $files[] = $value;
             }
         }

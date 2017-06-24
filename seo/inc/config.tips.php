@@ -23,6 +23,7 @@
           <div class="content-block">
             <ol>
               <li>在网站根目录（<?=WEBROOT?>）创建目录data</li>
+              <li>请将模板文件放入templates目录中，一个目录一套模板</li>
               <li>数据库文件（后缀必须是*.db）放入data目录中，一个数据库文件代表一个网站栏目，数据库的文件名即为栏目路径</li>
               <li>附加文件：用于在标题后附加随机关键词；多个文件用|分割；请将关键词文件放入data目录，txt格式，一行一个关键词</li>
               <li><a href="javascript:location.reload()">刷新本页面开始初始化</a></li>

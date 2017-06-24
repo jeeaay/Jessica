@@ -3,13 +3,14 @@
         require CMSPATH."/inc/config.tips.php";
     }else{
         $document = new Document(WEBROOT."/data");
-        if (empty($document->Search("db"))) {
+        if (empty($document->Search("db")) || empty($tempList = $document->AllDir(TMPPATH))) {
             require CMSPATH."/inc/config.tips.php";
             exit;
         } 
         if (!isset($_POST["webTitle"])) {
             $keyList = $document->Search("txt");
             $dbList = $document->Search("db");
+            $tempList = $document->AllDir(TMPPATH);
             require CMSPATH."/inc/config.init.php";
         }
         else{
@@ -39,6 +40,12 @@
             }else{
                 $post["indexDescription"] = "'".trim($_POST["indexDescription"])."'";                
             }
+            //模板
+            if(empty($_POST["tempName"])){
+                echo json_encode(["status"=>"error","msg"=>"必须选择模板！"]);
+                exit;
+            }
+            $post["tempName"] = "'".trim($_POST["tempName"])."'";
             //附加关键词
             $post["keywordFileSwitch"] = isset($_POST["keywordFileSwitch"])?  "true" : "false";
             $post["keywordFilesName"] = "false" ;
@@ -74,6 +81,7 @@
                 "/([\"|\']cateTitle[\"|\'])([^,]+),/i",
                 "/([\"|\']indexKeyword[\"|\'])([^,]+),/i",
                 "/([\"|\']indexDescription[\"|\'])([^,]+),/i",
+                "/([\"|\']tempName[\"|\'])([^,]+),/i",
                 "/([\"|\']urlTitle[\"|\'])([^,]+),/i",
                 "/([\"|\']keywordFileSwitch[\"|\'])([^,]+),/i",
                 "/([\"|\']keywordFilesName[\"|\'])([^,]+),/i"
@@ -84,6 +92,7 @@
                 "$1 => ".$post["cateTitle"].",",
                 "$1 => ".$post["indexKeyword"].",",
                 "$1 => ".$post["indexDescription"].",",
+                "$1 => ".$post["tempName"].",",
                 "$1 => ".$post["urlTitle"].",",
                 "$1 => ".$post["keywordFileSwitch"].",",
                 "$1 => ".$post["keywordFilesName"].",",

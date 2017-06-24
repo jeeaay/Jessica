@@ -13,6 +13,8 @@ $config = [
     "indexKeyword" => "",
     //首页描述
     "indexDescription" => "",
+    //模板名
+    "tempName" => "",
     //是否在url中显示标题
     "urlTitle" => "",
     //是否在标题后面添加随机关键词
