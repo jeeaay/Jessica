@@ -3,9 +3,9 @@
  * @Author: Jeay 
  * @Date: 2017-06-24 12:44:49 
  * @Last Modified by: Jeay
- * @Last Modified time: 2017-06-24 13:59:04
+ * @Last Modified time: 2017-06-24 14:49:17
  */
-class Result 
+class Result extends Temp
 {
     private $config;
     private $type;
@@ -14,16 +14,37 @@ class Result
         $this->config = $config;
         $this->type = $type;
     }
-    public function GetClassify()
+    public function GetContent()
     {
-        switch ($this->type) {
+        switch ($this->type["type"]) {
             case 'index':
                 $this->GetIndex();
                 break;
             
+            case 'sitemap':
+                $this->GetSitemap();
+                break;
+            
+            case 'category':
+                $this->GetCategory();
+                break;
+            
+            case 'single':
+                $this->GetSingle();
+                break;
+            
             default:
-                # code...
+                return "404";
                 break;
         }
+    }
+    private function GetIndex()
+    {
+        $cont = [];
+        foreach ($this->config["cateTitle"] as $key => $value) {
+            $cont[$key]["url"] = "/".str_replace(" ","-",$value)."/";
+            $cont[$key]["cateTitle"] = $value;
+        }
+        require TMPPATH."/".$this->config["tempName"]."/index.html";
     }
 }
