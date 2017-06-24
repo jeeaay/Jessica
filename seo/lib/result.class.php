@@ -3,7 +3,7 @@
  * @Author: Jeay 
  * @Date: 2017-06-24 12:44:49 
  * @Last Modified by: Jeay
- * @Last Modified time: 2017-06-24 15:56:53
+ * @Last Modified time: 2017-06-24 17:10:27
  */
 class Result extends SQLite
 {
@@ -14,7 +14,7 @@ class Result extends SQLite
         $this->config = $config;
         $this->type = $type;
     }
-    private function cateList(String $dbName = "", Int $page = 0, Int $postsNum = 20)
+    private function CateList(String $dbName = "", Int $page = 0, Int $postsNum = 20)
     {
         if (is_numeric($this->config["postsNum"])) {
             $postsNum = $this->config["postsNum"];
@@ -29,6 +29,33 @@ class Result extends SQLite
         }
         $sql = 'select * from Content order by id desc limit '.$postsNum.' offset '.$page*$postsNum;
         return $this->getlist($sql);
+    }
+    private function Pages(String $dbName = "", Int $page = 0, Int $postsNum = 20)
+    {
+        try{
+            $this->connection=new PDO('sqlite:'.$dbName);
+        }catch(PDOException $e){
+            exit ("数据库错误！".$e);
+        }
+        //计算分页数量
+        $sql="select ID from Content";
+        $totalPosts=$this->RecordCount($sql);//总文章数
+        $totalPage= ceil($totalPosts/$postsNum);//总分页数
+        if ($page>$totalPage) notFount("More Pages");
+        //分页
+        $pagesHTML = "";
+        for ($i=1; $i <=$totalPage ; $i++) { 
+            if ($i==$page) {
+                $pagesHTML.="<li>$i</li>";
+                continue;
+            }
+            if ($i==1) {
+                $pagesHTML.="<li><a href='.'>1</a></li>";
+                continue;
+            }
+            $pagesHTML.="<li><a href='list-{$i}.html'>{$i}</a></li>";
+        }
+        return $pagesHTML;
     }
     public function GetContent()
     {
@@ -65,10 +92,13 @@ class Result extends SQLite
     }
     private function GetCategory()
     {
-        $dbName = WEBROOT."/data/".str_replace("-"," ",urldecode($this->type["cate"])).".db";
-        if($list = $this->cateList($dbName,$this->type["page"]) == "404"){
+        $cateDB = str_replace("-"," ",urldecode($this->type["cate"]));
+        $dbName = WEBROOT."/data/".$cateDB.".db";
+        if(($list = $this->CateList($dbName,$this->type["page"])) == "404"){
             return 404;
         }else{
+            $title = $this->config["cateTitle"][$cateDB];
+            $pages = $this->Pages($dbName,$this->type["page"]);
             require TMPPATH."/".$this->config["tempName"]."/category.html";
         }
         exit;
