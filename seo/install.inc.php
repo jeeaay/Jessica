@@ -13,6 +13,8 @@
             require "config.init.php";
         }
         else{
+            // 返回json类型
+            header('Content-Type: application/json');
             //权限检查
             if (!is_readable(WEBROOT) || !is_writeable(WEBROOT)) {
                 echo json_encode(["status"=>"error","msg"=>"请将网站目录（".WEBROOT."）设置为可读写"]);
@@ -20,8 +22,7 @@
             }
             //标题
             if(empty($_POST["webTitle"])){
-                // 返回json类型
-                header('Content-Type: application/json');
+                
                 echo json_encode(["status"=>"error","msg"=>"标题不能为空！"]);
                 exit;
             }
@@ -47,7 +48,6 @@
                     if (is_file(WEBROOT."/data/".trim($value))) {
                         $post["keywordFilesName"] = $post["keywordFilesName"].trim($value).',';
                     }else{
-                        header('Content-Type: application/json');
                         echo json_encode(["status"=>"error","msg"=>"文件".trim($value)."不存在，请检查后再试"]);
                         exit;
                     }
@@ -58,8 +58,6 @@
             $post["urlTitle"] = isset($_POST["urlTitle"])?  "true" : "false";
             //栏目标题
             if(empty($_POST["cateTitle"])){
-                // 返回json类型
-                header('Content-Type: application/json');
                 echo json_encode(["status"=>"error","msg"=>"栏目标题不能为空！"]);
                 exit;
             }
@@ -93,7 +91,6 @@
 			$conffile=preg_replace($pattern,$replace,$conffile);
             //写入配置文件
             file_put_contents(WEBROOT."/config.php",$conffile);
-            header('Content-Type: application/json');
             echo json_encode(["status"=>"success","msg"=>"初始化成功"]);
         }
     }

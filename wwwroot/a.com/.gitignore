@@ -1,3 +1,5 @@
 .vscode
 data/*
 config.php
+adminer.php
+sql.php
