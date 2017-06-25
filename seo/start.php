@@ -3,7 +3,7 @@
  * @Author: Jeay 
  * @Date: 2017-06-23 17:31:26 
  * @Last Modified by: Jeay
- * @Last Modified time: 2017-06-26 00:03:21
+ * @Last Modified time: 2017-06-26 01:01:47
  */
 define("WEBROOT",$_SERVER['DOCUMENT_ROOT']);
 define("CMSPATH",dirname(__FILE__));
@@ -19,12 +19,11 @@ if (!file_exists(WEBROOT."/config.php")) {
 }else{
     //加载配置文件
     include WEBROOT."/config.php";
-    //实例化通用方法类
-    $common = new Common($config);
+    include CMSPATH."/inc/function.php";
     //路由开始
     $router = new Router($config);
     if ($router->Classify()=="404") {
-        $common->NotFound();
+        NotFound();
     }
     //展示内容
     $result = new Result($config,$router->Classify());

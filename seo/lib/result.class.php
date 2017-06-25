@@ -3,7 +3,7 @@
  * @Author: Jeay 
  * @Date: 2017-06-24 12:44:49 
  * @Last Modified by: Jeay
- * @Last Modified time: 2017-06-26 00:54:07
+ * @Last Modified time: 2017-06-26 01:00:16
  */
 class Result extends SQLite
 {
@@ -18,16 +18,17 @@ class Result extends SQLite
     {
         $this->config = $config;
         $this->type = $type;
+
         if ($this->type["type"] == 'category' || $this->type["type"] == 'single') {
             $this->dbName = str_replace("-"," ",urldecode($this->type["cate"]));
             $this->dbPath = WEBROOT."/data/".$cateDB.".db";
             if ( !is_file($dbName) ) {
-                notFount("This Category does not exist");
+                NotFount("This Category does not exist");
             }
             parent::__construct($dbName);
         }
     }
-    public function Render()
+    private function Render()
     {
         switch ($this->type["type"]) {
             case 'index':
@@ -75,7 +76,7 @@ class Result extends SQLite
         if ($list = $this->getlist($sql)) {
             return $list;
         }else{
-            notFount("This Category does not exist");
+            NotFount("This Category does not exist");
         }
     }
     // 栏目分页
@@ -87,7 +88,7 @@ class Result extends SQLite
         $sql="select ID from Content";
         $totalPosts=$this->RecordCount($sql);//总文章数
         $totalPage= ceil($totalPosts/$postsNum);//总分页数
-        if ($page>$totalPage) notFount("No More Pages");
+        if ($page>$totalPage) NotFount("No More Pages");
         //分页
         $pagesHTML = "";
         for ($i=1; $i <=$totalPage ; $i++) { 
@@ -110,7 +111,7 @@ class Result extends SQLite
         if ($list = $this->getlist($sql)) {
             return $list;
         }else{
-            notFount("This Category does not exist");
+            NotFount("This Category does not exist");
         }
     }
     // 获取随机文章
