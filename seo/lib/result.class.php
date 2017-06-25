@@ -3,32 +3,91 @@
  * @Author: Jeay 
  * @Date: 2017-06-24 12:44:49 
  * @Last Modified by: Jeay
- * @Last Modified time: 2017-06-24 17:10:27
+ * @Last Modified time: 2017-06-26 00:54:07
  */
 class Result extends SQLite
 {
     private $config;
     private $type;
+    // 当前分类使用的数据库名
+    private $dbName;
+    // 当前分类使用的数据库完整路径
+    private $dbPath;
+
     function __construct(Array $config = [], Array $type = [])
     {
         $this->config = $config;
         $this->type = $type;
+        if ($this->type["type"] == 'category' || $this->type["type"] == 'single') {
+            $this->dbName = str_replace("-"," ",urldecode($this->type["cate"]));
+            $this->dbPath = WEBROOT."/data/".$cateDB.".db";
+            if ( !is_file($dbName) ) {
+                notFount("This Category does not exist");
+            }
+            parent::__construct($dbName);
+        }
     }
-    private function CateList( Int $page = 0, Int $postsNum = 20)
+    public function Render()
     {
+        switch ($this->type["type"]) {
+            case 'index':
+                require TMPPATH."/".$this->config["tempName"]."/index.html";
+                break;
+            
+            case 'sitemap':
+                $this->GetSitemap();
+                break;
+            
+            case 'category':
+                $title = $this->config["cateTitle"][$this->dbName];
+                require TMPPATH."/".$this->config["tempName"]."/category.html";
+                break;
+            
+            case 'single':
+                $title = $this->config["cateTitle"][$this->dbName];
+                require TMPPATH."/".$this->config["tempName"]."/single.html";
+                break;
+            
+            default:
+                return "404";
+                break;
+        }
+    }
+    // 获取所有的栏目名及url
+    private function GetAllCate()
+    {
+        $allList = [];
+        foreach ($this->config["cateTitle"] as $key => $value) {
+            $cont[$key]["url"] = "/".str_replace(" ","-",$value)."/";
+            $cont[$key]["cateTitle"] = $value;
+        }
+        return $allList;
+    }
+    // 获取栏目列表
+    private function CateList()
+    {
+        $postsNum = is_numeric($this->config["postsNum"]) ? $this->config["postsNum"] : 20;
+        $page =  is_numeric($this->type["page"]) ? $this->type["page"] : 0;
         if (is_numeric($this->config["postsNum"])) {
             $postsNum = $this->config["postsNum"];
         }
         $sql = 'select * from Content order by id desc limit '.$postsNum.' offset '.$page*$postsNum;
-        return $this->getlist($sql);
+        if ($list = $this->getlist($sql)) {
+            return $list;
+        }else{
+            notFount("This Category does not exist");
+        }
     }
-    private function Pages( Int $page = 0, Int $postsNum = 20)
+    // 栏目分页
+    private function GetPages()
     {
+        $postsNum = is_numeric($this->config["postsNum"]) ? $this->config["postsNum"] : 20;
+        $page =  is_numeric($this->type["page"]) ? $this->type["page"] : 0;
         //计算分页数量
         $sql="select ID from Content";
         $totalPosts=$this->RecordCount($sql);//总文章数
         $totalPage= ceil($totalPosts/$postsNum);//总分页数
-        if ($page>$totalPage) notFount("More Pages");
+        if ($page>$totalPage) notFount("No More Pages");
         //分页
         $pagesHTML = "";
         for ($i=1; $i <=$totalPage ; $i++) { 
@@ -44,54 +103,19 @@ class Result extends SQLite
         }
         return $pagesHTML;
     }
-    public function GetContent()
+    // 获取内页
+    private function GetSingle()
     {
-        switch ($this->type["type"]) {
-            case 'index':
-                return $this->GetIndex();
-                break;
-            
-            case 'sitemap':
-                return $this->GetSitemap();
-                break;
-            
-            case 'category':
-                return $this->GetCategory();
-                break;
-            
-            case 'single':
-                return $this->GetSingle();
-                break;
-            
-            default:
-                return "404";
-                break;
-        }
-    }
-    private function GetIndex()
-    {
-        $cont = [];
-        foreach ($this->config["cateTitle"] as $key => $value) {
-            $cont[$key]["url"] = "/".str_replace(" ","-",$value)."/";
-            $cont[$key]["cateTitle"] = $value;
-        }
-        require TMPPATH."/".$this->config["tempName"]."/index.html";
-    }
-    private function GetCategory()
-    {
-        $cateDB = str_replace("-"," ",urldecode($this->type["cate"]));
-        $dbName = WEBROOT."/data/".$cateDB.".db";
-        if ( !is_file($dbName) ) {
-            return 404;
-        }
-        parent::__construct($dbName);
-        if(($list = $this->CateList($this->type["page"])) == "404"){
-            return 404;
+        $sql = 'select * from Content where ID = '.$this->type["id"];
+        if ($list = $this->getlist($sql)) {
+            return $list;
         }else{
-            $title = $this->config["cateTitle"][$cateDB];
-            $pages = $this->Pages($this->type["page"]);
-            require TMPPATH."/".$this->config["tempName"]."/category.html";
+            notFount("This Category does not exist");
         }
-        exit;
+    }
+    // 获取随机文章
+    private function GetRandPosts( $count = 20 , $cate = )
+    {
+
     }
 }

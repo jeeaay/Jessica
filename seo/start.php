@@ -3,7 +3,7 @@
  * @Author: Jeay 
  * @Date: 2017-06-23 17:31:26 
  * @Last Modified by: Jeay
- * @Last Modified time: 2017-06-24 14:27:01
+ * @Last Modified time: 2017-06-26 00:03:21
  */
 define("WEBROOT",$_SERVER['DOCUMENT_ROOT']);
 define("CMSPATH",dirname(__FILE__));
@@ -28,9 +28,8 @@ if (!file_exists(WEBROOT."/config.php")) {
     }
     //展示内容
     $result = new Result($config,$router->Classify());
-    if ($result->GetContent()=="404") {
-        $common->NotFound();
-    }
-    //var_dump($result->GetContent()) ;
+    //渲染开始
+    $result->Render();
+    //var_dump($result->Render()) ;
 }
 
