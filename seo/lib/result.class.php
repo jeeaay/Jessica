@@ -109,7 +109,7 @@ class Result extends SQLite
     // 获取附加的随机标题
     public function getSubtitle(Int $id = NULL)
     {
-        if(is_numeric($id) && $this->config['keywordFileSwitch']){
+        if(is_numeric($id)){
             if(!($subTitle = $this->getlist('select `title2` from Content where ID = '.$id)[0][0])){
                 $subTitle = "";
                 foreach ($this->config["keywordFilesName"] as $value) {
