@@ -110,15 +110,7 @@ class Result extends SQLite
     public function getSubtitle(Int $id = NULL)
     {
         if(is_numeric($id)){
-            if(!($subTitle = $this->getlist('select `title2` from Content where ID = '.$id)[0][0])){
-                $subTitle = "";
-                foreach ($this->config["keywordFilesName"] as $value) {
-                    $keyList = file(WEBROOT."/data/".$value);
-                    $keyCount = count($keyList);
-                    $subTitle .= $keyList[rand(0,$keyCount-1)];
-                }
-                $this->query('update Content set title2 = "'.$subTitle.'" where ID = '.$id);
-            }
+            $subTitle = $this->getlist('select `title2` from Content where ID = '.$id)[0][0];
             return $subTitle;            
         }
         else{

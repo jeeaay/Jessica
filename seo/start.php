@@ -44,16 +44,9 @@ if (!file_exists(WEBROOT."/config.php")) {
         case 'single':
             $single = $result->GetSingle()[0];
             $content = Common::ResFilter($single["content"]);
+            $title = $single["title"];
             if ($config["keywordFileSwitch"]) {
-                if(empty($single["title2"])){
-                    $subTitle = $result->getSubtitle($single["ID"]);
-                    $title = $single["title"].$subTitle;
-                }else{
-                    $title = $single["title"].$single["title2"];
-                }
-                
-            }else{
-                $title = $single["title"];
+                $title .= empty($single["title2"]) ? $result->getSubtitle($single["ID"]) : $single["title2"];
             }
             //$pubTime = $single["pub_time"];
             require TMPPATH."/".$config["tempName"]."/single.html";
