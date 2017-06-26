@@ -19,16 +19,42 @@ if (!file_exists(WEBROOT."/config.php")) {
 }else{
     //加载配置文件
     include WEBROOT."/config.php";
-    include CMSPATH."/inc/function.php";
     //路由开始
     $router = new Router($config);
-    if ($router->Classify()=="404") {
-        NotFound();
+    if ( ($classify = $router->Classify())=="404") {
+        Common::NotFound();
     }
     //展示内容
-    $result = new Result($config,$router->Classify());
+    $result = new Result($config,$classify);
     //渲染开始
-    $result->Render();
+    switch ($classify["type"]) {
+        case 'index':
+            require TMPPATH."/".$config["tempName"]."/index.html";
+            break;
+        
+        case 'sitemap':
+            $result->GetSitemap();
+            break;
+        
+        case 'category':
+            $title = $config["cateTitle"][$result->dbName];
+            require TMPPATH."/".$config["tempName"]."/category.html";
+            break;
+        
+        case 'single':
+            $single = $result->GetSingle()[0];
+            $content = $single["content"];
+            $title = $single["title"];
+            //$pubTime = $single["pub_time"];
+            require TMPPATH."/".$config["tempName"]."/single.html";
+            break;
+        
+        default:
+            Common::NotFound();
+            break;
+    }
+    
+    //$result->Render();
     //var_dump($result->Render()) ;
 }
 

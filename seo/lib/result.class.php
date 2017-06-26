@@ -10,7 +10,7 @@ class Result extends SQLite
     private $config;
     private $type;
     // 当前分类使用的数据库名
-    private $dbName;
+    public $dbName;
     // 当前分类使用的数据库完整路径
     private $dbPath;
 
@@ -18,17 +18,16 @@ class Result extends SQLite
     {
         $this->config = $config;
         $this->type = $type;
-
         if ($this->type["type"] == 'category' || $this->type["type"] == 'single') {
             $this->dbName = str_replace("-"," ",urldecode($this->type["cate"]));
-            $this->dbPath = WEBROOT."/data/".$cateDB.".db";
-            if ( !is_file($dbName) ) {
-                NotFount("This Category does not exist");
+            $this->dbPath = WEBROOT."/data/".$this->dbName.".db";
+            if ( !is_file($this->dbPath) ) {
+                Common::NotFound();
             }
-            parent::__construct($dbName);
+            parent::__construct($this->dbPath);
         }
     }
-    private function Render()
+    /*public function Render()
     {
         switch ($this->type["type"]) {
             case 'index':
@@ -53,19 +52,19 @@ class Result extends SQLite
                 return "404";
                 break;
         }
-    }
+    }*/
     // 获取所有的栏目名及url
-    private function GetAllCate()
+    public function GetAllCate()
     {
         $allList = [];
         foreach ($this->config["cateTitle"] as $key => $value) {
-            $cont[$key]["url"] = "/".str_replace(" ","-",$value)."/";
-            $cont[$key]["cateTitle"] = $value;
+            $allList[$key]["url"] = "/".str_replace(" ","-",$key)."/";
+            $allList[$key]["cateTitle"] = $value;
         }
         return $allList;
     }
     // 获取栏目列表
-    private function CateList()
+    public function CateList()
     {
         $postsNum = is_numeric($this->config["postsNum"]) ? $this->config["postsNum"] : 20;
         $page =  is_numeric($this->type["page"]) ? $this->type["page"] : 0;
@@ -80,7 +79,7 @@ class Result extends SQLite
         }
     }
     // 栏目分页
-    private function GetPages()
+    public function GetPages()
     {
         $postsNum = is_numeric($this->config["postsNum"]) ? $this->config["postsNum"] : 20;
         $page =  is_numeric($this->type["page"]) ? $this->type["page"] : 0;
@@ -105,18 +104,32 @@ class Result extends SQLite
         return $pagesHTML;
     }
     // 获取内页
-    private function GetSingle()
+    public function GetSingle()
     {
         $sql = 'select * from Content where ID = '.$this->type["id"];
         if ($list = $this->getlist($sql)) {
             return $list;
         }else{
-            NotFount("This Category does not exist");
+            Common::NotFound();
         }
     }
     // 获取随机文章
-    private function GetRandPosts( $count = 20 , $cate = )
+    public function GetRandPosts( $count = 20 ,$cate =Null )
     {
-
+        if (!is_numeric($count)) {
+            $cate = $count;
+            $count = 20;
+        }
+        $getPostsFrom = !$cate ? $this->dbPath : WEBROOT."/data/".str_replace("-"," ",urldecode($cate)).".db";
+        if ($cate) {
+            $getPostsFrom = WEBROOT."/data/".str_replace("-"," ",urldecode($cate)).".db";
+            parent::__construct($this->dbPath);
+        }
+        $sql = 'select * from Content order by random() limit '.$count;
+        if ($list = $this->getlist($sql)) {
+            return $list;
+        }else{
+            Common::NotFound();
+        }
     }
 }
