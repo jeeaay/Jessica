@@ -80,7 +80,7 @@ class Result extends SQLite
     // 获取内页
     public function GetSingle()
     {
-        $sql = 'select * from Content where ID = '.$this->type["id"].'and pub_time < '.time();
+        $sql = 'select * from Content where ID = '.$this->type["id"].' and pub_time < '.time();
         if ($list = $this->getlist($sql)) {
             return $list;
         }else{
