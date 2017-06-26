@@ -20,7 +20,5 @@ $config = [
     //是否在url中显示标题
     "urlTitle" => "",
     //是否在标题后面添加随机关键词
-    "keywordFileSwitch" => "",
-    //储存随机关键词的文件名
-    "keywordFilesName" => "",
+    "keywordFileSwitch" => ""
 ];

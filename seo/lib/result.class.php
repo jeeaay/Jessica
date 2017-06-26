@@ -41,7 +41,7 @@ class Result extends SQLite
     public function CateList()
     {
         $postsNum = is_numeric($this->config["postsNum"]) ? $this->config["postsNum"] : 20;
-        $page =  is_numeric($this->type["page"]) ? $this->type["page"] : 0;
+        $page =  is_numeric($this->type["page"]) ? $this->type["page"]-1 : 0;
         if (is_numeric($this->config["postsNum"])) {
             $postsNum = $this->config["postsNum"];
         }
@@ -49,7 +49,7 @@ class Result extends SQLite
         if ($list = $this->getlist($sql)) {
             return $list;
         }else{
-            NotFount("This Category does not exist");
+            Common::NotFound();
         }
     }
     // 栏目分页
@@ -104,6 +104,17 @@ class Result extends SQLite
             return $list;
         }else{
             Common::NotFound();
+        }
+    }
+    // 获取附加的随机标题
+    public function getSubtitle(Int $id = NULL)
+    {
+        if(is_numeric($id)){
+            $subTitle = $this->getlist('select `title2` from Content where ID = '.$id)[0][0];
+            return $subTitle;            
+        }
+        else{
+            return "";
         }
     }
 }

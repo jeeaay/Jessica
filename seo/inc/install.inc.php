@@ -41,19 +41,6 @@
             $post["tempName"] = "'".trim($_POST["tempName"])."'";
             //附加关键词
             $post["keywordFileSwitch"] = isset($_POST["keywordFileSwitch"])?  "true" : "false";
-            $post["keywordFilesName"] = "false" ;
-            if ($post["keywordFileSwitch"] && !empty($_POST["keywordFilesName"])) {
-                $post["keywordFilesName"] = "" ;                
-                foreach (explode(" ",trim($_POST["keywordFilesName"])) as  $value) {
-                    if (is_file(WEBROOT."/data/".trim($value))) {
-                        $post["keywordFilesName"] = $post["keywordFilesName"].'"'.trim($value).'",';
-                    }else{
-                        echo json_encode(["status"=>"error","msg"=>"文件".trim($value)."不存在，请检查后再试"]);
-                        exit;
-                    }
-                }
-                $post["keywordFilesName"] =  "[".rtrim($post["keywordFilesName"],",")."]";
-            }
             //url中添加title
             $post["urlTitle"] = isset($_POST["urlTitle"])?  "true" : "false";
             //栏目标题
@@ -73,8 +60,7 @@
                 "/([\"|\']postsNum[\"|\'])([^,]+),/i",
                 "/([\"|\']tempName[\"|\'])([^,]+),/i",
                 "/([\"|\']urlTitle[\"|\'])([^,]+),/i",
-                "/([\"|\']keywordFileSwitch[\"|\'])([^,]+),/i",
-                "/([\"|\']keywordFilesName[\"|\'])([^,]+),/i"
+                "/([\"|\']keywordFileSwitch[\"|\'])([^,]+),/i"
             );
 			$replace=array(
                 "$1 ".date("Y-m-d H:i:s",time()),
@@ -85,8 +71,7 @@
                 "$1 => ".$post["postsNum"].",",
                 "$1 => ".$post["tempName"].",",
                 "$1 => ".$post["urlTitle"].",",
-                "$1 => ".$post["keywordFileSwitch"].",",
-                "$1 => ".$post["keywordFilesName"].",",
+                "$1 => ".$post["keywordFileSwitch"].","
             );
 			$conffile=preg_replace($pattern,$replace,$conffile);
             //写入配置文件

@@ -118,31 +118,6 @@
                   </div>
                 </div>
               </li>
-              <li class="keyword-files">
-                <div class="item-content">
-                  <div class="item-inner">
-                    <div class="item-title label">附加文件</div>
-                    <div class="item-input">
-                      <input id="keywordFilesName" type="text" placeholder="附加关键词文件，点击下面选取，注意顺序">
-                    </div>
-                  </div>
-                </div>
-                <div class="content-block" style="margin:0">
-                  <p class="buttons-row"  style="margin:0;">
-                    <?php 
-                    if(is_array($keyList) && !empty($keyList)){
-                      foreach ($keyList as $value){ 
-                    ?>
-                    <a href="#" class="button select-key-files"><?=$value?></a>
-                    <?php } 
-                    }else{
-                    ?>
-                    请先将附加关键词文件放入<?=WEBROOT?>/data/目录中
-                    <?php
-                    }
-                    ?>
-                  </p>
-                </div>
               </li>
               <div class="content-block" style="margin:0">
                 <p style="margin-bottom: 0">设置各栏目的标题（不填则与数据库名相同）：</p>
@@ -209,20 +184,6 @@
           $(this).addClass("active").siblings().removeClass("active");
           $("#tempName").val($.trim($(this).html()));
         });
-        // 选取附加关键词文件
-        $(".select-key-files").click(function (e) { 
-          e.preventDefault();
-          if ($(this).hasClass("active")) {
-            $(this).removeClass("active");
-            var val = $("#keywordFilesName").val();
-            val = val.replace($.trim($(this).html()),"");
-            $("#keywordFilesName").val($.trim(val));
-          }else{
-            $(this).addClass("active");
-            $("#keywordFilesName").val($.trim($("#keywordFilesName").val()+" "+$(this).html()));
-          }
-          
-        });
         // 提交
         $("#submit").click(function (e) { 
           e.preventDefault();
@@ -234,16 +195,11 @@
             $.alert("必须选择一个模板！");
             return false;
           }
-          if($("#keywordFileSwitch:checked").val()!=undefined && $("#keywordFilesName").val()==""){
-            $.alert("请输入文件名，多个文件用|分割");
-            return false;
-          }
           var data = {
             "webTitle":$("#webTitle").val(),
             "indexKeyword":$("#indexKeyword").val(),
             "indexDescription":$("#indexDescription").val(),
             "tempName":$("#tempName").val(),
-            "keywordFilesName":$("#keywordFilesName").val()
           }
           $("#postsNum").val()==undefined || $("#postsNum").val()=="" ? false : data.postsNum = $("#postsNum").val();
           if($("#keywordFileSwitch:checked").val()){
