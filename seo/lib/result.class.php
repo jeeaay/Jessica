@@ -27,32 +27,6 @@ class Result extends SQLite
             parent::__construct($this->dbPath);
         }
     }
-    /*public function Render()
-    {
-        switch ($this->type["type"]) {
-            case 'index':
-                require TMPPATH."/".$this->config["tempName"]."/index.html";
-                break;
-            
-            case 'sitemap':
-                $this->GetSitemap();
-                break;
-            
-            case 'category':
-                $title = $this->config["cateTitle"][$this->dbName];
-                require TMPPATH."/".$this->config["tempName"]."/category.html";
-                break;
-            
-            case 'single':
-                $title = $this->config["cateTitle"][$this->dbName];
-                require TMPPATH."/".$this->config["tempName"]."/single.html";
-                break;
-            
-            default:
-                return "404";
-                break;
-        }
-    }*/
     // 获取所有的栏目名及url
     public function GetAllCate()
     {
@@ -71,7 +45,7 @@ class Result extends SQLite
         if (is_numeric($this->config["postsNum"])) {
             $postsNum = $this->config["postsNum"];
         }
-        $sql = 'select * from Content order by id desc limit '.$postsNum.' offset '.$page*$postsNum;
+        $sql = 'select * from Content where pub_time < '.time().' order by id desc  limit '.$postsNum.' offset '.$page*$postsNum;
         if ($list = $this->getlist($sql)) {
             return $list;
         }else{
@@ -84,7 +58,7 @@ class Result extends SQLite
         $postsNum = is_numeric($this->config["postsNum"]) ? $this->config["postsNum"] : 20;
         $page =  is_numeric($this->type["page"]) ? $this->type["page"] : 0;
         //计算分页数量
-        $sql="select ID from Content";
+        $sql="select ID from Content where pub_time < ".time();
         $totalPosts=$this->RecordCount($sql);//总文章数
         $totalPage= ceil($totalPosts/$postsNum);//总分页数
         if ($page>$totalPage) NotFount("No More Pages");
@@ -106,7 +80,7 @@ class Result extends SQLite
     // 获取内页
     public function GetSingle()
     {
-        $sql = 'select * from Content where ID = '.$this->type["id"];
+        $sql = 'select * from Content where ID = '.$this->type["id"].'and pub_time < '.time();
         if ($list = $this->getlist($sql)) {
             return $list;
         }else{
