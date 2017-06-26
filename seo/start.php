@@ -43,7 +43,7 @@ if (!file_exists(WEBROOT."/config.php")) {
         
         case 'single':
             $single = $result->GetSingle()[0];
-            $content = $single["content"];
+            $content = Common::ResFilter($single["content"]);
             $title = $single["title"];
             //$pubTime = $single["pub_time"];
             require TMPPATH."/".$config["tempName"]."/single.html";
