@@ -49,7 +49,7 @@ class Result extends SQLite
         if ($list = $this->getlist($sql)) {
             return $list;
         }else{
-            NotFount("This Category does not exist");
+            Common::NotFound();
         }
     }
     // 栏目分页

@@ -131,7 +131,8 @@
                   <p class="buttons-row"  style="margin:0;">
                     <?php 
                     if(is_array($keyList) && !empty($keyList)){
-                      foreach ($keyList as $value){ 
+                      foreach ($keyList as $value){
+			                  if ($value == "replace.txt") continue; 
                     ?>
                     <a href="#" class="button select-key-files"><?=$value?></a>
                     <?php } 
