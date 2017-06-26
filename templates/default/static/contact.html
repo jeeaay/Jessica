@@ -1,0 +1,172 @@
+﻿﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Contact us</title>
+<meta name="keywords" content="Kefid crusher, Kefid Machine,Kefid Mill, Jaw crusher" />
+<link rel="stylesheet" type="text/css" href="/template/default-en/style.css"
+    media="all" />
+</head>
+<body>
+<script src="/template/default-en/img/top.js"></script>
+
+<div class="contact_container">
+<div id="sidebar">
+     <script src="/template/default-en/img/sidebar.js"></script>       
+        
+        
+        <h3><span>Head office</span></h3>
+        <p>
+            Address: Room 802A, Building 16, No.1000, Jinhai Road, Shanghai, China.<br>
+            Tel: 0086-21-50458961<br>
+            Fax: 0086-21-50458962<br>
+        
+    </p>
+    </div>
+    <div id="main">
+        <h1><span>Contact Us</span></h1>
+        <form id="inquiry" method="post" name="form" action="http://data.kefid.com/Action.asp" onsubmit="return(CheckfootInput())">
+    <p>Please fill in your name and your message and do not forget mail and/or phone if you like to be contacted. Please note that you do not need to have a mail programme to use this function.</p>
+    <div>
+        <!-- Text input-->
+        <label for="name">Name:<span>*</span></label>
+        <input name="userName" style="color: rgb(153, 153, 153);" onfocus="if(value=='As: Mario'){value='';this.style.color='#000';};" onblur="if(value==''){value='As: Mario';this.style.color='#999';};" value="As: Mario" size="25" type="text">
+    </div>
+    <div>
+        <!-- Text input-->
+        <label for="input01">Email:<span>*</span></label>
+        <input name="userEMail" style="color: rgb(153, 153, 153);" onfocus="if(value=='As: sample@isp.com'){value='';this.style.color='#000';};" onblur="if(value==''){value='As: sample@isp.com';this.style.color='#999';};" value="As: sample@isp.com" size="25" maxlength="50" type="text">
+    </div>
+    <div>
+        <!-- Textarea -->
+        <label>Message:<span>*</span></label>
+        <textarea name="Message" cols="45" rows="6" style="color: rgb(153, 153, 153);" onfocus="if(value=='As: output size like 0-10,10-15, 15-20 mm for crushing or 75 microns ( 200 meshes) for mill machine and other requirements.'){value='';this.style.color='#000';};" onblur="if(value==''){value='As: output size like 0-10,10-15, 15-20 mm for crushing or 75 microns ( 200 meshes) for mill machine and other requirements.';this.style.color='#999';};">As: output size like 0-10,10-15, 15-20 mm for crushing or 75 microns ( 200 meshes) for mill machine and other requirements.</textarea>
+    </div>
+    <div>
+        <label>Products:</label>
+        <select name="product">
+            <option selected="selected" value="" style="color: rgb(255, 0, 0); font-weight: bold;">Please Select!</option>
+            <option value="Mobile crushing plant">Mobile Crusher</option>
+            <option value="LM Vertical Grinding Mill">Vertical Mill</option>
+            <option value="Jaw Crusher">Jaw Crusher</option>
+            <option value="Cone Crusher">Cone Crusher</option>
+            <option value="MTW European Grinding Machine">MTW European Grinding Machine</option>
+            <option value="Ultrafine Mill">Ultrafine Mill</option>
+            <option value="Impact Crusher">Impact Crusher</option>
+            <option value="VSI Crusher">VSI Crusher</option>
+            <option value="Hydraulic Cylinder Cone Crusher">Hydraulic Cylinder Cone Crusher</option>
+            <option value="Sand Washing Machine">Sand Washing Machine</option>
+            <option value="Vibrating Screen">Vibrating Screen</option>
+            <option value="Vibrating Feeder">Vibrating Feeder</option>
+            <option value="Belt Conveyor">Belt Conveyor</option>
+            <option value="Stone processing production line">Stone processing production line</option>
+            <option value="Industrial milling production line">Industrial milling production line</option>
+            <option value="Beneficiation Production Line">Beneficiation Production Line</option>
+            <option value="Not Sure" style="color: rgb(255, 0, 0); font-weight: bold;">Not Sure !</option>
+        </select>
+    </div>
+    <div>
+        <label>Application:</label>
+        <!-- Multiple Checkboxes -->
+        <select name="mType" id="Application" onchange="checkapplication()">
+       <option>Select</option>
+      <option value="Limestone">Limestone</option>
+      <option value="Granite">Granite</option>
+      <option value="Basalt">Basalt</option>
+      <option value="Iron ore">Iron ore</option>
+      <option value="Gold">Gold</option>
+      <option value="Barite">Barite</option>
+      <option value="Marble">Marble</option>
+      <option value="Other">Other</option></select>
+    </div>
+    <div>
+        <!-- Text input-->
+        <label for="phone">Phone:</label>
+        <input name="userTel" style="color: rgb(153, 153, 153);" onfocus="if(value=='As: 0086-371-56719929'){value='';this.style.color='#000';};" onblur="if(value==''){value='As: 0086-371-56719929';this.style.color='#999';};" value="As: 0086-371-56719929" size="25" type="text">
+    </div>
+    <div>
+        <!-- Button -->
+        <input value="Submit" type="submit">
+    </div>
+</form>
+<script type="text/javascript">
+function is_number(str) 
+{
+    exp = /[^0-9 .+()-]/g;
+    if (str.search(exp) != -1) 
+    {
+        return false;
+    }
+    return true;
+}
+            
+function is_email(str) 
+{
+    if ((str.indexOf("@") == -1) || (str.indexOf(".") == -1)) 
+    {
+        return false;
+    }
+    return true;
+}
+                
+function CheckfootInput()
+{
+    if(document.form.name.value==''||document.form.name.value=='As: Mario')
+    {
+        alert("Please Write Your Name ^_^");
+        document.form.name.focus();
+        return false;
+    }
+                
+    if(document.form.email.value==''||document.form.email.value=='As: sample@isp.com'||!is_email(document.form.email.value))
+    {
+        alert("Please Write Your Email ^_^");
+        document.form.email.focus();
+        return false;
+    }
+                
+    if(document.form.content.value==''||document.form.content.value=='As: output size like 0-10,10-15, 15-20 mm for crushing or 75 microns ( 200 meshes) for mill machine and other requirements.')
+    {
+        alert("Please Write Your Message ^_^");
+        document.form.content.focus();
+        return false;
+    }
+                
+    if(document.form.capacity.value=='As: 20 TPH')
+    {
+        document.form.capacity.value='';
+    }
+                
+    if(document.form.title.value=='As: Marble')
+    {
+        document.form.title.value='';
+    }
+                
+    if(document.form.phone.value=='As: 0086-371-56719929')
+    {
+        document.form.phone.value = '';
+    }
+                
+    return true;
+}
+</script>      
+    </div>
+    
+    <div class="clearfix">
+    </div>
+</div>
+<div id="bottom_bg">
+  <div id="bottom"> Copyright  2000-2014, Shanghai KEFID Mining and Construction Machinery Co., Ltd. All Rights Reserved. </div>
+</div>
+<script src="/template/default-en/img/kfdswt.js"></script>
+    <script>
+        document
+                .writeln("<div class=\"floatzoos\" style=\"position: fixed !important;right: 0px;bottom: 10px;position: absolute;z-index: 1000;\"><a href=\"javascript:openZoosUrl()\"><img src=\"/template/default-en/img/kfdenonchat.gif\" /></a></div>" );
+        var content = 'FIND <b>'
+                + document.title
+                + '</b> ? <a href=javascript:openZoosUrl()>To learn more, please Chat Online.</a>';
+        invatation(content, 5);
+    </script>
+
+</body>
+</html>

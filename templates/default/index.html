@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title><?=$config["webTitle"]?></title>
+<meta name="keywords" content="{title}" />
+<link rel="stylesheet" type="text/css" href="/default/style.css"
+    media="all" />
+</head>
+<body>
+    <div id="top_bg">
+        <div id="top">
+            <a href="/" class="index"></a>
+            <!--navbegin-->
+            <div class="nav">
+                <ul>
+                    <li>
+                        <a href="/" class="home">HOME</a>
+                    </li>
+                    <li>
+                        <a href="/default/static/about.html" rel="nofollow">ABOUT US</a>
+                    </li>
+                    <li>
+                        <a href="/default/static/products.html" rel="nofollow">PRODUCTS</a>
+                    </li>
+                    <li>
+                        <a href="/default/static/contact.html" rel="nofollow">CONTACT US</a>
+                    </li>
+                    <li>
+                        <a href="/default/static/service.html" rel="nofollow">SERVICE</a>
+                    </li>
+                </ul>
+            </div>
+            <!--navover-->
+        </div>
+    </div>
+
+    <div id="banner">
+        <a rel="nofollow" href="javascript:void(0);"
+            onclick="openZoosUrl('chatwin')">
+            <img src="/default/img/banner.jpg"
+                style="width: 985px; height: 313px; margin-top: 8px; margin-left: 8px;" />
+        </a>
+    </div>
+<div id="content">
+        <div id="tj_lm">
+            <ul>
+                <li>
+                    <div class="tj_lm"> <img src="/default/img/tj_com.jpg" height="77" width="110"><span>Company has centered on the creation and improvement of mining tools for additional than 20 years.</span>
+                        <h3>THE BEST PRODUCTS</h3>
+                    </div>
+                </li>
+                <li>
+                    <div class="tj_lm"> <img src="/default/img/tj_pro.jpg" height="77" width="110"><span>We provide the best pre- and after-sales service , let you buy the rest assured, And our service is the best in China.</span>
+                        <h3>THE BEST SERVICE </h3>
+                    </div>
+                </li>
+                <li>
+                    <div class="tj_lm"> <img src="/default/img/tj_ser.jpg" height="77" width="110"><span>Focus on mining machinery for 20 years , has a good customer reputation, I believe we are the best.</span>
+                        <h3>BEST CUSTOMER REPUTATION</h3>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--left-->
+        <div id="sy_left">
+            <!--proleft-->
+            <div id="sy_pro_left">
+                <!--pro-->
+                <div class="prolist">
+                    <h3>Product List</h3>
+                    <ul>
+                        <li><a href="/default/static/stonecrusher.html" rel="nofollow" class="white">Stone Crusher</a></li>
+                        <li><a href="/default/static/mobile.html" rel="nofollow" class="white">Mobile Crusher</a></li>
+                        <li><a href="/default/static/grinding.html" rel="nofollow" class="white">Grinding Mill</a></li>
+                        <li><a href="/default/static/feeding.html" rel="nofollow" class="white">Feeding& Conveying</a></li>
+                        <li><a href="/default/static/beneficiation.html" rel="nofollow" class="white">Beneficiation Equipments</a></li>
+                    </ul>
+                </div>
+                
+            </div>
+            <!--proleftover-->
+            <!--proright-->
+            <div id="sy_pro_right">
+                <div id="tab_one_1">
+                    <!---->
+                    <ul>
+                    
+                            <li>
+                                <h3>Jaw Crusher </h3> <img src="/default/img/ijawcrusher.jpg" alt="Jaw Crusher">
+                                <p> This jaw crusher will likely be used inside the industry of mining, metallurgy, road & railway </p>
+                            </li>
+                        
+                            <li>
+                                <h3>Grinding Mill</h3> <img src="/default/img/igrindingmill.jpg" alt="Grinding Mill">
+                                <p>Grinding is the required powdering or pulverizing process when final size of below 2 mm is needed. </p>
+                            </li>
+                        
+                            <li>
+                                <h3>Mobile Crusher</h3> <img src="/default/img/imobilecrusher.jpg" alt="Mobile Crusher">
+                                <p>The mobile crushing plant has the advantages of easy transportation, low transportation cost</p>
+                            </li>
+                        
+                            <li>
+                                <h3>Cone Crusher</h3> <img src="/default/img/iconecrusher.jpg" alt="Cone Crusher">
+                                <p>cone crusher is broadly employed in industries like design, street setting up, iron ore extraction</p>
+                            </li>
+                        
+                    </ul>
+                    <!--over-->
+                </div>
+            </div>
+            <!--prorightover-->
+            <!--proover-->
+        </div>
+        <!--leftover-->
+        <!--right-->
+        <div id="sy_right">
+            <div id="sy_right_new">
+                <h3>Category</h3>               
+                          
+
+   
+
+    
+        <ul class="expornew" >
+            <?php foreach($result->GetAllCate() as $v) {?>
+            <li><a href="<?=$v['url']?>"><?=$v['cateTitle']?></a></li>
+            <?php }?>
+        </ul> 
+
+
+       
+        </div>
+        </div>
+    </div>
+<div id="bottom_bg">
+  <div id="bottom"> Copyright  2000-2014, Shanghai KEFID Mining and Construction Machinery Co., Ltd. All Rights Reserved. </div>
+</div>
+<script src="/default/img/kfdswt.js"></script>
+    <script>
+        document
+                .writeln("<div class=\"floatzoos\" style=\"position: fixed !important;right: 0px;bottom: 10px;position: absolute;z-index: 1000;\"><a href=\"javascript:openZoosUrl()\"><img src=\"/default/img/kfdenonchat.gif\" /></a></div>" );
+        var content = 'FIND <b>'
+                + document.title
+                + '</b> ? <a href=javascript:openZoosUrl()>To learn more, Welcome to Chat Online.</a>';
+        invatation(content, 5);
+    </script>
+</body>
+</html>

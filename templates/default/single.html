@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title><?=$title?></title>
+<meta name="keywords" content="{title}" />
+<link rel="stylesheet" type="text/css" href="/default/style.css"/>
+</head>
+<body>
+<script src="/default/img/top.js"></script>
+  <div id="content">
+
+
+
+    <div id="sidebar">
+      <script src="/default/img/sidebar.js"></script>
+      <h3 style="margin-top:29px;line-height: 50px;">Recommended</h3>
+            
+                <ul>
+                <?php foreach($result->GetRandPosts() as $v) { ?>
+                  <li>
+                    <a href="<?=$v['ID']?><?php if($config['urlTitle']){echo "-".urlencode(str_replace(" ","-",$v['title']));}?>.html">
+                      <?=$v['title']?>
+                    </a>
+                  </li>
+                <?php } ?>
+                </ul>
+    </div>
+    <!--sidebar-->
+
+        <div class="test">
+<div class="solution_left">
+            <h1><?=$title?></h1>
+           
+            
+             <script language="javascript" src="/default/img/products.js" ></script>     
+                         
+ </div><!--solution_left-->
+  <script type="text/javascript" src="http://www.kefid.com/Outside/In-En-10.js"></script>
+ <div id="news"><!--neirong begin-->
+
+              <div class="article">
+               
+                <?=$content?>
+                
+
+              </div>
+              
+              
+            </div><!--neirong end-->
+</div></div><!--content-->
+<div id="bottom_bg">
+  <div id="bottom"> Copyright  2000-2014, Shanghai KEFID Mining and Construction Machinery Co., Ltd. All Rights Reserved. </div>
+</div>
+<script src="/default/img/kfdswt.js"></script>
+  <script>
+    document
+        .writeln("<div class=\"floatzoos\" style=\"position: fixed !important;right: 0px;bottom: 10px;position: absolute;z-index: 1000;\"><a href=\"javascript:openZoosUrl()\"><img src=\"/default/img/kfdenonchat.gif\" /></a></div>" );
+    var content = 'FIND <b>'
+        + document.title
+        + '</b> ? <a href=javascript:openZoosUrl()>To learn more, Welcome to Chat Online.</a>';
+    invatation(content, 5);
+  </script>
+</body>
+</html>
