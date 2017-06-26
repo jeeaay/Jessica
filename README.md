@@ -1,13 +1,4 @@
 # seo内容管理系统
 `a smart systeam whithout Smarty`
-## 1. 环境搭建
-需要环境：`ubuntu`,`php7`,`nginx`
 
-## 2. 数据库处理
-
-
-## 3. 标签
-
-[查看详细标签](http://git.oschina.net/lmzg/seo/wikis/%E6%A0%87%E7%AD%BE)
-
-
+[使用文档](https://github.com/jeeaay/seocms/wiki/%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3)
