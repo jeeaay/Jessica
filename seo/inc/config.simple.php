@@ -20,5 +20,6 @@ $config = [
     //是否在url中显示标题
     "urlTitle" => "",
     //是否在标题后面添加随机关键词
-    "keywordFileSwitch" => ""
+    "keywordFileSwitch" => "",
+    "sitemapPassword" => ""
 ];

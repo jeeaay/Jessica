@@ -23,7 +23,12 @@ class Router{
 			return ["type" => "index"];
 		}
         // sitemap
-        if($this->uri=="/sitemap.xml"){
+        if(preg_match("/^\/sitemap-[^-]{6}-([^.\d]+)(\d+)?\.xml$/i",$this->uri, $matche)){
+            echo "<pre>";
+            var_dump($matche) ;
+            echo "</pre>";
+            //echo Common::generate_password();
+            exit;
             return ["type" => "sitemap"];
         }
         // 目录

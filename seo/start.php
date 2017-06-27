@@ -33,7 +33,7 @@ if (!file_exists(WEBROOT."/config.php")) {
             break;
         
         case 'sitemap':
-            $result->GetSitemap();
+            //require CMSPATH."/inc/sitemap.inc.php";
             break;
         
         case 'category':
