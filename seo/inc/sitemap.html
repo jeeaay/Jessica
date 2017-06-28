@@ -68,14 +68,14 @@
         </div>
         <div class="modal  modal-no-buttons modal-in" style="margin-top: -78px;">
           <div class="modal-inner">
-            <div class="modal-title">正在生成随机时间</div>
+            <div class="modal-title">正在生成<span id="progress-title"></span></div>
             <div class="modal-text">
                 <div class="progress">
-									<div class="progress-bar" style="width: 50%;">
+									<div class="progress-bar" style="width: 0%;">
 										&nbsp;</div>
                   
 								</div>
-                <p>进度：50%</p>
+                <p>进度：<span id="progress">0%</span></p>
                 <div class="preloader"></div>
             </div>
           </div>
@@ -89,46 +89,82 @@
     <script type='text/javascript' src='https://g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
     <script>
       $(function () {
-        var allDbs = <?=$allDbs?>;
+        window.allDbs = <?=$allDbs?>;
         $("#submit").click(function (e) { 
           e.preventDefault();
           $(".modal-overlay").addClass("modal-overlay-visible");
           $(".modal").show();
-
-          var postsCount = $("#postsNum").val()=="" ? 2000 : $("#postsNum").val();
-          var data = {
-            "postsCount":postsCount,
-          }
-          //console.log(allDbs);
-          $.each(allDbs, function (indexInArray, valueOfElement) {
-             data.dbName = valueOfElement;
-            $.post(location.href, data,
-              function (data) {
-                console.log(data);
-                if (data.err) {
-                  $.alert(data.err);
-                }else{
-                  console.log(data);
-                }
-              }
-            );
-          });
-          /*$.post(location.href, data,
-            function (data, textStatus, jqXHR) {
-              if(data.status=="success"){
-                $.alert(data.msg,function () {location.reload()});
-              }else{
-                $.alert(data.msg);
-              }
-              
-            },
-          );*/
+          window.postsCount = $("#postsNum").val()=="" ? 2000 : $("#postsNum").val();
+          window.progress = 0;
+          window.i = 0;
+          SubDbName();
         });
       });
-      var hideModal = function (){
+      //递归提交数据库名
+      function SubDbName(){
+        if(i == allDbs.length){
+          $(".modal").removeClass("modal-no-buttons").html('<div class="modal-inner"><div class="modal-text">生成成功</div></div><div class="modal-buttons "><span class="modal-button modal-button-bold">确定</span></div>'); 
+          $(".modal-button").click(function(){HideModal()});         
+          return false;
+        }
+        var data = {
+          "postsCount":postsCount,
+          "dbName":allDbs[i]
+        };
+        $.post(location.href, data,
+          function (msg) {
+            if (msg.err) {
+              $.alert(msg.err);
+            }else{
+              progress = progress + 100 * (1/allDbs.length) * (1/(msg.totalPage+1) );
+              SetProgress(Math.round(progress),allDbs[i] +" SitemapIndex");
+              //总页数
+              window.totalPage = msg.totalPage;
+              SubPage(0);
+            }
+          }
+        );
+        
+      }
+      //递归提交页数
+      function SubPage(j){
+        if(j == totalPage){
+          i++;
+          SubDbName(i);
+          return false;
+        }
+        var data = {
+                "postsCount":postsCount,
+                "dbName":allDbs[i],
+                "page":j
+              };
+        $.post(location.href, data,
+          function (msg) {
+            if (msg.err) {
+              $.alert(msg.err);
+            }else{
+              //console.log(msg);
+              progress = progress + 100 * (1/allDbs.length) * (1/(totalPage+1) );
+              SetProgress(Math.round(progress),allDbs[i]+" 第"+msg.page+"个sitemap");
+              console.log(msg);
+            }
+          }
+        );
+        j++;
+        SubPage(j);
+      }
+      //隐藏进度消息
+      function HideModal (){
         $(".modal-overlay").removeClass("modal-overlay-visible");
         $(".modal").hide();
-      };
+      }
+      //设置进度条
+      function SetProgress(progress,title){
+        $("#progress-title").html(title);
+        $("#progress").html(progress+"%");
+        $(".progress-bar").width(progress+"%");
+      }
+
     </script>
   </body>
 </html>
