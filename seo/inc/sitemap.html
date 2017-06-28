@@ -99,7 +99,20 @@
           var data = {
             "postsCount":postsCount,
           }
-          console.log(data);
+          //console.log(allDbs);
+          $.each(allDbs, function (indexInArray, valueOfElement) {
+             data.dbName = valueOfElement;
+            $.post(location.href, data,
+              function (data) {
+                console.log(data);
+                if (data.err) {
+                  $.alert(data.err);
+                }else{
+                  console.log(data);
+                }
+              }
+            );
+          });
           /*$.post(location.href, data,
             function (data, textStatus, jqXHR) {
               if(data.status=="success"){
