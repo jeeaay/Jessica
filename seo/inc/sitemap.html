@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>生成sitemap</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="https://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="https://g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+    <style>
+      .progress-bar {
+          color: #fff;
+          float: left;
+          background-color: #0a0;
+          display: inline-block;
+          font-size: 12px;
+          line-height: 14px;
+          text-align: center;
+      }
+      .progress .progress-bar:last-child {
+          border-radius: 0 7px 7px 0;
+      }
+      .progress {
+          height: 14px;
+          overflow: hidden;
+          background-color: #f5f5f5;
+          border-radius: 7px;
+          -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+          box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+      }
+      .modal{width: 20rem;margin-left: -10rem;}
+    </style>
+  </head>
+  <body>
+    <div class="page-group">
+        <div class="page page-current" style="max-width: 760px;margin: 0 auto;">
+        <header class="bar bar-nav">
+          <h1 class='title'>生成sitemap</h1>
+        </header>
+        <div class="content">
+          <div class="list-block">
+            <ul>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">文章数量</div>
+                    <div class="item-input">
+                      <input id="postsNum" type="text" placeholder="每个sitemap文件最大文章数量，默认2000">
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="content-block">
+            <div class="row">
+              <div class="col-50"><a id="submit" href="#" class="button button-big button-fill button-success">提交</a></div>
+              <div class="col-50"><a href="#" class="button button-big button-fill button-danger">取消</a></div>
+            </div>
+          </div>
+          
+        </div>
+        
+        </div>
+        <div class="modal  modal-no-buttons modal-in" style="margin-top: -78px;">
+          <div class="modal-inner">
+            <div class="modal-title">正在生成<span id="progress-title"></span></div>
+            <div class="modal-text">
+                <div class="progress">
+									<div class="progress-bar" style="width: 0%;">
+										&nbsp;</div>
+                  
+								</div>
+                <p>进度：<span id="progress">0%</span></p>
+                <div class="preloader"></div>
+            </div>
+          </div>
+          <div class="modal-buttons "></div>
+        </div>
+        <div class="modal-overlay"></div>
+    </div>
+
+    <script type='text/javascript' src='https://g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='https://g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='https://g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+    <script>
+      $(function () {
+        window.allDbs = <?=$allDbs?>;
+        $("#submit").click(function (e) { 
+          e.preventDefault();
+          $(".modal-overlay").addClass("modal-overlay-visible");
+          $(".modal").show();
+          window.postsCount = $("#postsNum").val()=="" ? 2000 : $("#postsNum").val();
+          window.progress = 0;
+          window.i = 0;
+          SubDbName();
+        });
+      });
+      //递归提交数据库名
+      function SubDbName(){
+        if(i == allDbs.length){
+          $(".modal").removeClass("modal-no-buttons").html('<div class="modal-inner"><div class="modal-text">生成成功</div></div><div class="modal-buttons "><span class="modal-button modal-button-bold">确定</span></div>'); 
+          $(".modal-button").click(function(){location.reload()});
+          return false;
+        }
+        var data = {
+          "postsCount":postsCount,
+          "dbName":allDbs[i]
+        };
+        $.post(location.href, data,
+          function (msg) {
+            if (msg.err) {
+              $.alert(msg.err);
+            }else{
+              progress = progress + 100 * (1/allDbs.length) * (1/(msg.totalPage+1) );
+              SetProgress(Math.round(progress),allDbs[i] +" SitemapIndex");
+              //总页数
+              window.totalPage = msg.totalPage;
+              SubPage(0);
+            }
+          }
+        );
+        
+      }
+      //递归提交页数
+      function SubPage(j){
+        if(j == totalPage){
+          i++;
+          SubDbName(i);
+          return false;
+        }
+        var data = {
+                "postsCount":postsCount,
+                "dbName":allDbs[i],
+                "page":j
+              };
+        $.post(location.href, data,
+          function (msg) {
+            if (msg.err) {
+              $.alert(msg.err);
+            }else{
+              //console.log(msg);
+              progress = progress + 100 * (1/allDbs.length) * (1/(totalPage+1) );
+              SetProgress(Math.round(progress),allDbs[i]+" 第"+msg.page+"个sitemap");
+            }
+          }
+        );
+        j++;
+        SubPage(j);
+      }
+      //隐藏进度消息
+      function HideModal (){
+        $(".modal-overlay").removeClass("modal-overlay-visible");
+        $(".modal").hide();
+      }
+      //设置进度条
+      function SetProgress(progress,title){
+        $("#progress-title").html(title);
+        $("#progress").html(progress+"%");
+        $(".progress-bar").width(progress+"%");
+      }
+
+    </script>
+  </body>
+</html>

@@ -13,51 +13,51 @@ header ( "Content-Type: text/html; charset=utf-8" );
 function __autoload($className) {
 	include CMSPATH."/lib/" . strtolower ( $className ) . ".class.php";
 }
-if (!file_exists(WEBROOT."/config.php")) {
-    //进入安装页面
-    include CMSPATH."/inc/install.inc.php";
-}else{
+
+if (file_exists(WEBROOT."/config.php")) {
     //加载配置文件
     include WEBROOT."/config.php";
-    //路由开始
-    $router = new Router($config);
-    if ( ($classify = $router->Classify())=="404") {
-        Common::NotFound();
-    }
-    //展示内容
-    $result = new Result($config,$classify);
-    //渲染开始
-    switch ($classify["type"]) {
-        case 'index':
-            require TMPPATH."/".$config["tempName"]."/index.html";
-            break;
-        
-        case 'sitemap':
-            $result->GetSitemap();
-            break;
-        
-        case 'category':
-            $title = $config["cateTitle"][$result->dbName];
-            require TMPPATH."/".$config["tempName"]."/category.html";
-            break;
-        
-        case 'single':
-            $single = $result->GetSingle()[0];
-            $content = Common::ResFilter($single["content"]);
-            $title = $single["title"];
-            if ($config["keywordFileSwitch"]) {
-                $title .=  $result->getSubtitle($single["ID"]) ;
-            }
-            //$pubTime = $single["pub_time"];
-            require TMPPATH."/".$config["tempName"]."/single.html";
-            break;
-        
-        default:
+    //生成sitemap
+    if (isset($_GET[$config["sitemapPassword"]])) {
+        require CMSPATH."/inc/sitemap.inc.php";
+    }else{
+        //路由开始
+        $router = new Router($config);
+        if ( ($classify = $router->Classify())=="404") {
             Common::NotFound();
-            break;
+        }
+        //展示内容
+        $result = new Result($config,$classify);
+        //渲染开始
+        switch ($classify["type"]) {
+            case 'index':
+                require TMPPATH."/".$config["tempName"]."/index.html";
+                break;
+            
+            case 'category':
+                $title = $config["cateTitle"][$result->dbName];
+                require TMPPATH."/".$config["tempName"]."/category.html";
+                break;
+            
+            case 'single':
+                $single = $result->GetSingle()[0];
+                $content = Common::ResFilter($single["content"]);
+                $title = $single["title"];
+                if ($config["keywordFileSwitch"]) {
+                    $title .=  $result->getSubtitle($single["ID"]) ;
+                }
+                //$pubTime = $single["pub_time"];
+                require TMPPATH."/".$config["tempName"]."/single.html";
+                break;
+            
+            default:
+                Common::NotFound();
+                break;
+        }
     }
     
-    //$result->Render();
-    //var_dump($result->Render()) ;
+}else{
+    //进入安装页面
+    include CMSPATH."/inc/install.inc.php";
 }
 

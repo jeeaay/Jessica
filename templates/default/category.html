@@ -207,8 +207,8 @@
 <ul class="cat_list">
 <?php foreach($result->CateList() as $v ){?>
 	<li>
-		<a href="<?=$v['ID']?><?php if($config['urlTitle']){echo "-".urlencode(str_replace(" ","-",$v['title']));}?>.html">
-			<?=$v['title']?>
+		<a href="<?=$v['ID']?><?php if($config['urlTitle']){echo "-".urlencode(str_replace(" ","-",$v['title']."-".$result->getSubtitle($v['ID'])));}?>.html">
+			<?=$v['title']?> <?=$result->getSubtitle($v['ID'])?>
 		</a>
 	</li>
 <?php }?>

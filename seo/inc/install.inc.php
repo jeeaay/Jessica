@@ -49,6 +49,7 @@
                 exit;
             }
             $post["cateTitle"] = trim($_POST["cateTitle"]);
+            $post["sitemapPassword"] = "'".Common::GeneratePassword()."'";
             //开始创建配置文件
             $conffile=file_get_contents(CMSPATH."/inc/config.simple.php");
 			$pattern=array(
@@ -60,7 +61,8 @@
                 "/([\"|\']postsNum[\"|\'])([^,]+),/i",
                 "/([\"|\']tempName[\"|\'])([^,]+),/i",
                 "/([\"|\']urlTitle[\"|\'])([^,]+),/i",
-                "/([\"|\']keywordFileSwitch[\"|\'])([^,]+),/i"
+                "/([\"|\']keywordFileSwitch[\"|\'])([^,]+),/i",
+                "/([\"|\']sitemapPassword[\"|\'])([^,]+),/i"
             );
 			$replace=array(
                 "$1 ".date("Y-m-d H:i:s",time()),
@@ -71,7 +73,8 @@
                 "$1 => ".$post["postsNum"].",",
                 "$1 => ".$post["tempName"].",",
                 "$1 => ".$post["urlTitle"].",",
-                "$1 => ".$post["keywordFileSwitch"].","
+                "$1 => ".$post["keywordFileSwitch"].",",
+                "$1 => ".$post["sitemapPassword"].","
             );
 			$conffile=preg_replace($pattern,$replace,$conffile);
             //写入配置文件

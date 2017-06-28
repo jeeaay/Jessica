@@ -22,10 +22,6 @@ class Router{
         if ($this->uri==""||$this->uri=="/") {
 			return ["type" => "index"];
 		}
-        // sitemap
-        if($this->uri=="/sitemap.xml"){
-            return ["type" => "sitemap"];
-        }
         // 目录
         if( preg_match("/^\/([^\/]+)\/$/i",$this->uri, $matche) ){
             
