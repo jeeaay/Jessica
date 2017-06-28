@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>生成sitemap</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="https://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="https://g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+    <style>
+      .progress-bar {
+          color: #fff;
+          float: left;
+          background-color: #0a0;
+          display: inline-block;
+          font-size: 12px;
+          line-height: 14px;
+          text-align: center;
+      }
+      .progress .progress-bar:last-child {
+          border-radius: 0 7px 7px 0;
+      }
+      .progress {
+          height: 14px;
+          overflow: hidden;
+          background-color: #f5f5f5;
+          border-radius: 7px;
+          -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+          box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+      }
+      .modal{width: 20rem;margin-left: -10rem;}
+    </style>
+  </head>
+  <body>
+    <div class="page-group">
+        <div class="page page-current" style="max-width: 760px;margin: 0 auto;">
+        <header class="bar bar-nav">
+          <h1 class='title'>生成sitemap</h1>
+        </header>
+        <div class="content">
+          <div class="list-block">
+            <ul>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">文章数量</div>
+                    <div class="item-input">
+                      <input id="postsNum" type="text" value="10" placeholder="每个sitemap文件最大文章数量，默认2000">
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="content-block">
+            <div class="row">
+              <div class="col-50"><a id="submit" href="#" class="button button-big button-fill button-success">提交</a></div>
+              <div class="col-50"><a href="#" class="button button-big button-fill button-danger">取消</a></div>
+            </div>
+          </div>
+          
+        </div>
+        
+        </div>
+        <div class="modal  modal-no-buttons modal-in" style="margin-top: -78px;">
+          <div class="modal-inner">
+            <div class="modal-title">正在生成随机时间</div>
+            <div class="modal-text">
+                <div class="progress">
+									<div class="progress-bar" style="width: 50%;">
+										&nbsp;</div>
+                  
+								</div>
+                <p>进度：50%</p>
+                <div class="preloader"></div>
+            </div>
+          </div>
+          <div class="modal-buttons "></div>
+        </div>
+        <div class="modal-overlay"></div>
+    </div>
+
+    <script type='text/javascript' src='https://g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='https://g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='https://g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+    <script>
+      $(function () {
+        var allDbs = <?=$allDbs?>;
+        $("#submit").click(function (e) { 
+          e.preventDefault();
+          $(".modal-overlay").addClass("modal-overlay-visible");
+          $(".modal").show();
+
+          var postsCount = $("#postsNum").val()=="" ? 2000 : $("#postsNum").val();
+          var data = {
+            "postsCount":postsCount,
+          }
+          console.log(data);
+          /*$.post(location.href, data,
+            function (data, textStatus, jqXHR) {
+              if(data.status=="success"){
+                $.alert(data.msg,function () {location.reload()});
+              }else{
+                $.alert(data.msg);
+              }
+              
+            },
+          );*/
+        });
+      });
+      var hideModal = function (){
+        $(".modal-overlay").removeClass("modal-overlay-visible");
+        $(".modal").hide();
+      };
+    </script>
+  </body>
+</html>

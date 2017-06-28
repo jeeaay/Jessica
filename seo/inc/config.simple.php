@@ -21,5 +21,6 @@ $config = [
     "urlTitle" => "",
     //是否在标题后面添加随机关键词
     "keywordFileSwitch" => "",
-    "sitemapPassword" => ""
+    //sitemap密码，随机生成
+    "sitemapPassword" => "",
 ];

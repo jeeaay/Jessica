@@ -49,7 +49,7 @@
                 exit;
             }
             $post["cateTitle"] = trim($_POST["cateTitle"]);
-            $post["sitemapPassword"] = "'".Common::generate_password()."'";
+            $post["sitemapPassword"] = "'".Common::GeneratePassword()."'";
             //开始创建配置文件
             $conffile=file_get_contents(CMSPATH."/inc/config.simple.php");
 			$pattern=array(

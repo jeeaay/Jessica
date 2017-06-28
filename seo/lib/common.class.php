@@ -39,10 +39,10 @@ class Common
 		$src = preg_replace ( '/\d{1,}:\d{1,}:\d{1,}/', '', $src ); // 19:12:53
 		$src = preg_replace ( '/\d{1,}:\d{1,}/', '', $src ); // 19:12
 		$src = preg_replace ( '/\d{6,}$/', '', $src ); // 139545648
-		return self::txtReplace($src);
+		return self::TxtReplace($src);
 	}
 	//品牌词替换
-	public static function txtReplace($str){
+	public static function TxtReplace($str){
 		//$str=$this->resFilter($str);
 		$changeTxt = file_get_contents ( WEBROOT."/data/replace.txt" );
 		$arrChangeTxt = preg_split ( '/[\n]+/', trim ( $changeTxt ) );
@@ -60,7 +60,8 @@ class Common
 		}
 		return $str;
 	}
-	public static function generate_password( $length = 6 ) {
+	//生成随机密码
+	public static function GeneratePassword( $length = 6 ) {
 		$chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
 		$password = '';
@@ -71,4 +72,9 @@ class Common
 
 		return $password;
 	}
+	/*//根据目录名获取数据库地址
+	public static function Dir2Db(String $dir)
+	{
+		str_replace(" ","-",$dir)
+	}*/
 }
