@@ -225,7 +225,7 @@
               }else{
                 $.alert(data.msg,function () {window.location.href="./?"+data.sitemap});
               }              
-            },
+            }
           );
         });
       });
