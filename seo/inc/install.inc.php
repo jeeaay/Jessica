@@ -18,12 +18,12 @@
             header('Content-Type: application/json');
             //权限检查
             if (!is_readable(WEBROOT) || !is_writeable(WEBROOT)) {
-                echo json_encode(["status"=>"error","msg"=>"请将网站目录（".WEBROOT."）设置为可读写"]);
+                echo json_encode(["err"=>"请将网站目录（".WEBROOT."）设置为可读写"]);
                 exit;
             }
             //标题
             if(empty($_POST["webTitle"])){
-                echo json_encode(["status"=>"error","msg"=>"标题不能为空！"]);
+                echo json_encode(["err"=>"标题不能为空！"]);
                 exit;
             }
             $post["webTitle"] = trim($_POST["webTitle"]);
@@ -35,7 +35,7 @@
             $post["postsNum"] = empty($_POST["postsNum"]) ? 20 : (int)trim($_POST["postsNum"]);
             //模板
             if(empty($_POST["tempName"])){
-                echo json_encode(["status"=>"error","msg"=>"必须选择模板！"]);
+                echo json_encode(["err"=>"必须选择模板！"]);
                 exit;
             }
             $post["tempName"] = "'".trim($_POST["tempName"])."'";
@@ -45,7 +45,7 @@
             $post["urlTitle"] = isset($_POST["urlTitle"])?  "true" : "false";
             //栏目标题
             if(empty($_POST["cateTitle"])){
-                echo json_encode(["status"=>"error","msg"=>"栏目标题不能为空！"]);
+                echo json_encode(["err"=>"栏目标题不能为空！"]);
                 exit;
             }
             $post["cateTitle"] = trim($_POST["cateTitle"]);
@@ -79,6 +79,6 @@
 			$conffile=preg_replace($pattern,$replace,$conffile);
             //写入配置文件
             file_put_contents(WEBROOT."/config.php",$conffile);
-            echo json_encode(["status"=>"success","msg"=>"初始化成功"]);
+            echo json_encode(["err"=>NULL,"msg"=>"初始化成功","sitemap"=>trim($post["sitemapPassword"],"'")]);
         }
     }

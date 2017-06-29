@@ -207,7 +207,7 @@
 <ul class="cat_list">
 <?php foreach($result->CateList() as $v ){?>
 	<li>
-		<a href="<?=$v['ID']?><?php if($config['urlTitle']){echo "-".urlencode(str_replace(" ","-",$v['title']."-".$result->getSubtitle($v['ID'])));}?>.html">
+		<a href="<?=$v['ID']?>-<?=urlencode(str_replace(" ","-",$v['title']."-".$result->getSubtitle($v['ID'])))?>.html">
 			<?=$v['title']?> <?=$result->getSubtitle($v['ID'])?>
 		</a>
 	</li>
@@ -217,7 +217,24 @@
 
 				</div>
 				<div class="nearbypost"> 
-<?=$result->GetPages()?>
+
+<ul>
+	<?php $res=$result->GetPages()?>
+	<li><a href="./">首页</a></li>
+	<?php if($res["pre"]){?>
+	<li><a href="<?=$res['pre']?>">上一页</a></li>
+	<?php }?>
+	<?php foreach($res["page"] as $k => $v) {?>
+	<li><a href="<?=$v?>"><?=$k?></a></li>
+	<?php }?>
+	<?php if($res["next"]){?>
+	<li><a href="<?=$res['next']?>">下一页</a></li>
+	<?php }?>
+	<li><a href="<?=$res['last']?>">最后一页</a></li>
+	
+</ul>
+
+
 </div>
 			</div>
 			<!--neirong end-->

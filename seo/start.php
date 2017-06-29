@@ -35,6 +35,11 @@ if (file_exists(WEBROOT."/config.php")) {
                 break;
             
             case 'category':
+                //判断分页是否存在
+                if ($result->PagerInfo()["totalPages"]<$classify["page"]) {
+                    Common::NotFound();
+                }
+                
                 $title = $config["cateTitle"][$result->dbName];
                 require TMPPATH."/".$config["tempName"]."/category.html";
                 break;

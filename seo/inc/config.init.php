@@ -155,7 +155,7 @@
           <div>
             <ol>
               <li>首页关键词、描述不需要的话不填写即可</li>
-              <li>附加文件：用于在标题后附加随机的关键词，需要注意顺序</li>
+              <li>附加文件：用于在标题后附加随机的关键词，如果在处理数据库时没有选择添加随机关键词，这里也不要选择</li>
               <li>数据库文件名为栏目的url</li>
               <li>url包含标题：把标题添加到url里 不勾选为[id].html 勾选后为 id-key-word.html</li>
             </ol>
@@ -220,13 +220,12 @@
           data.cateTitle = "[" + data.cateTitle + "]";
           $.post(location.href, data,
             function (data, textStatus, jqXHR) {
-              if(data.status=="success"){
-                $.alert(data.msg,function () {location.reload()});
-              }else{
+              if(data.err){
                 $.alert(data.msg);
-              }
-              
-            },
+              }else{
+                $.alert(data.msg,function () {window.location.href="./?"+data.sitemap});
+              }              
+            }
           );
         });
       });
