@@ -52,30 +52,41 @@ class Result extends SQLite
             Common::NotFound();
         }
     }
+    public function PagerInfo()
+    {
+        //每页文章数
+        $everyPage = is_numeric($this->config["postsNum"]) ? $this->config["postsNum"] : 20;
+        //当前页数
+        $currentPage =  is_numeric($this->type["page"]) ? $this->type["page"] : 0;
+        //计算分页数量
+        $sql="select ID from Content where pub_time < ".time();
+        //总文章数
+        $totalPosts=$this->RecordCount($sql);
+        //总分页数
+        $totalPages= ceil($totalPosts/$everyPage);
+        return ["everyPage"=>$everyPage,"currentPage"=>$currentPage,"totalPosts"=>$totalPosts,"totalPages"=>$totalPages];
+    }
     // 栏目分页
     public function GetPages()
     {
-        $postsNum = is_numeric($this->config["postsNum"]) ? $this->config["postsNum"] : 20;
-        $page =  is_numeric($this->type["page"]) ? $this->type["page"] : 0;
-        //计算分页数量
-        $sql="select ID from Content where pub_time < ".time();
-        $totalPosts=$this->RecordCount($sql);//总文章数
-        $totalPage= ceil($totalPosts/$postsNum);//总分页数
-        if ($page>$totalPage) NotFount("No More Pages");
-        //分页
-        $pagesHTML = "";
-        for ($i=1; $i <=$totalPage ; $i++) { 
-            if ($i==$page) {
+        $info = $this->PagerInfo();
+        
+       /* //分页
+        for ( $i = 0; $i < $this->config["pagerCount"] ; $i++ ) { 
+            if ($page) {
+                # code...
+            }
+            if ( $i == $page ) {
                 $pagesHTML.="<li>$i</li>";
                 continue;
             }
-            if ($i==1) {
+            if ( $i == 1 ) {
                 $pagesHTML.="<li><a href='.'>1</a></li>";
                 continue;
             }
             $pagesHTML.="<li><a href='list-{$i}.html'>{$i}</a></li>";
         }
-        return $pagesHTML;
+        return $pagesHTML;*/
     }
     // 获取内页
     public function GetSingle()
