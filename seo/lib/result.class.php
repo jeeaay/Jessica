@@ -70,23 +70,71 @@ class Result extends SQLite
     public function GetPages()
     {
         $info = $this->PagerInfo();
-        
-       /* //分页
-        for ( $i = 0; $i < $this->config["pagerCount"] ; $i++ ) { 
-            if ($page) {
-                # code...
-            }
-            if ( $i == $page ) {
-                $pagesHTML.="<li>$i</li>";
-                continue;
-            }
-            if ( $i == 1 ) {
-                $pagesHTML.="<li><a href='.'>1</a></li>";
-                continue;
-            }
-            $pagesHTML.="<li><a href='list-{$i}.html'>{$i}</a></li>";
+        $pageBefore = ceil($this->config["pagerCount"]/2)-1;
+        $pageAfter = floor($this->config["pagerCount"]/2);
+        //当前页
+        if ($info["currentPage"] > 1) {
+            $pages[$info["currentPage"]] = "";
         }
-        return $pagesHTML;*/
+        //当前页前面的分页
+        for ($i=0; $i <= $pageBefore; $i++) { 
+            $j = $info["currentPage"] - $i;
+            if($j<1){
+                $j = $j+$this->config["pagerCount"];
+            }
+            if ($j > $info["totalPages"]) {
+                continue;
+            }
+            if ($j == $info["currentPage"]){
+                continue;
+            }
+            if ($j == 1){
+                $pages [$j] = "./";
+            }else{
+                $pages [$j] = "list-{$j}.html";
+            }
+            
+        }
+        //当前页后面的分页
+        
+        for ($i=0; $i <= $pageAfter; $i++) { 
+            $j = $info["currentPage"] + $i;
+            if($j>$info["totalPages"]){
+                $j = $j-$this->config["pagerCount"];
+            }
+            if($j<1){
+                continue;
+            }
+            /*if ($j > $info["totalPages"]) {
+                continue;
+            }*/
+            if ($j == $info["currentPage"]){
+                continue;
+            }
+            if ($j == 1){
+                $pages [$j] = "./";
+            }else{
+                $pages [$j] = "list-{$j}.html";
+            }
+        }
+        ksort($pages);
+        //最后一页
+        $lastPage= "list-{$info["totalPages"]}.html";
+        //上一页
+        if($info["currentPage"]-1 == 1 ){
+            $prePage = "./";
+        }elseif($info["currentPage"]-1 > 1){
+            $prePage = "list-".($info["currentPage"]-1).".html";
+        }else{
+            $prePage = false;
+        }
+        //下一页
+        if($info["currentPage"] != $info["totalPages"] ){
+            $nextPage = "list-".($info["currentPage"]+1).".html";
+        }else{
+            $nextPage = false;
+        }
+        return ["page"=>$pages,"last"=>$lastPage,"next"=>$nextPage,"pre"=>$prePage];
     }
     // 获取内页
     public function GetSingle()

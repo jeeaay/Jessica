@@ -39,6 +39,7 @@ if (file_exists(WEBROOT."/config.php")) {
                 if ($result->PagerInfo()["totalPages"]<$classify["page"]) {
                     Common::NotFound();
                 }
+                
                 $title = $config["cateTitle"][$result->dbName];
                 require TMPPATH."/".$config["tempName"]."/category.html";
                 break;

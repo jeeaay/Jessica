@@ -24,5 +24,5 @@ $config = [
     //sitemap密码，随机生成
     "sitemapPassword" => "",
     //分页显示数量
-    "pagerCount" => "10"
+    "pagerCount" => "5"
 ];
