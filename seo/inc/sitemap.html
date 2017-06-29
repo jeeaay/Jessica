@@ -102,9 +102,10 @@
       });
       //递归提交数据库名
       function SubDbName(){
+        //递归完成
         if(i == allDbs.length){
           $(".modal").removeClass("modal-no-buttons").html('<div class="modal-inner"><div class="modal-text">生成成功</div></div><div class="modal-buttons "><span class="modal-button modal-button-bold">确定</span></div>'); 
-          $(".modal-button").click(function(){location.reload()});
+          $(".modal-button").click(function(){window.location.href="/"});
           return false;
         }
         var data = {
@@ -151,11 +152,6 @@
         );
         j++;
         SubPage(j);
-      }
-      //隐藏进度消息
-      function HideModal (){
-        $(".modal-overlay").removeClass("modal-overlay-visible");
-        $(".modal").hide();
       }
       //设置进度条
       function SetProgress(progress,title){
