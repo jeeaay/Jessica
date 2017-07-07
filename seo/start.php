@@ -20,7 +20,12 @@ if (file_exists(WEBROOT."/config.php")) {
     //生成sitemap
     if (isset($_GET[$config["sitemapPassword"]])) {
         require CMSPATH."/inc/sitemap.inc.php";
-    }else{
+    }
+    //在线ping
+    elseif(isset($_GET["ping"]) && $_GET["ping"] == $config["sitemapPassword"] ){
+        require CMSPATH."/inc/ping.inc.php";
+    }
+    else{
         //路由开始
         $router = new Router($config);
         if ( ($classify = $router->Classify())=="404") {

@@ -1,4 +1,10 @@
 <?php
+/*
+ * @Author: Jeay 
+ * @Date: 2017-06-28 8:05:46 
+ * @Last Modified by: Jeay
+ * @Last Modified time: 2017-06-29 16:06:07
+ */
 if (isset($_POST["postsCount"])) {
     header('Content-Type: application/json');
     //检查是否可读写
@@ -51,7 +57,7 @@ if (isset($_POST["postsCount"])) {
         $sitemapIndex .= "<sitemap><loc>http://".$_SERVER ['HTTP_HOST']."/sitemap/sitemap-".$config["sitemapPassword"]."-{$cateUrl}".$num.".xml</loc></sitemap>\n";
     }
     $sitemapIndex = '<?xml version="1.0" encoding="UTF-8"?>'."\n".'<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n".$sitemapIndex."</sitemapindex>";
-    $filePath = WEBROOT."/sitemap/sitemapindex-".$config["sitemapPassword"]."-".str_replace(" ","-",$_POST["dbName"]).".xml";
+    $filePath = WEBROOT."/sitemap/sitemapindex-".$config["sitemapPassword"]."-".urlencode(str_replace(" ","-",$_POST["dbName"])).".xml";
     if (!file_put_contents($filePath,$sitemapIndex)) {
         echo json_encode(["err"=>"写入失败，请检查".WEBROOT."/sitemap目录是否有写入权限"]);
     }  
