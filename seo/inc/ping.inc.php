@@ -23,7 +23,10 @@ if(isset($_POST["dbName"])){
         include CMSPATH."/lib/sqlite.class.php";
         $db = new SQLite($dbPath);
         $sql = "select * from Content where pub_time < ".time()." and is_ping <> 1 order by random() limit 1";
-        $post = $db->getlist($sql)[0];
+        if( !($post = $db->getlist($sql)[0] )){
+            echo json_encode(["err"=>"所有文章都已经ping过了"]);
+            exit;
+        }
         $title =$post["title"];
         if($config["keywordFileSwitch"]){
             $title .= " ".$post["title2"];
@@ -37,17 +40,37 @@ if(isset($_POST["dbName"])){
     }
     $url = $site_url.$url;
     $ping = new Ping($config["webTitle"],$site_url,$url);
+    $is_ping = false;
     if ($_POST["google"]) {
         $res .= " google: ";
-        $res .= $ping->google() ? "success" : "failed";
+        if($ping->google()){
+            $res .= "success";
+            $is_ping = true;
+        }else{
+            $res .= "failed";
+        }
     }
     if ($_POST["baidu"]) {
         $res .= " baidu: ";
-        $res .= $ping->baidu() ? "success" : "failed";
+        if($ping->baidu()){
+            $res .= "success";
+            $is_ping = true;
+        }else{
+            $res .= "failed";
+        }
     }
     if ($_POST["yandex"]) {
         $res .= " yandex: ";
-        $res .= $ping->yandex() ? "success" : "failed";
+        if($ping->yandex()){
+            $res .= "success";
+            $is_ping = true;
+        }else{
+            $res .= "failed";
+        }
+    }
+    if($is_ping){
+        $sql = "update Content set is_ping = 1 where ID = ".$post["ID"];
+        $db->query($sql);
     }
     echo json_encode(["err"=>NULL,"res"=>$res]);
 }else{

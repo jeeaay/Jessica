@@ -250,8 +250,8 @@
     });
     //选择栏目后递归提交
     function SubPost(i){
-      SetProgress(Math.round(100 * (i/dbList.length)),"正在ping：第"+i+"篇文章");
       var totalCount = Number($("#postsCount").val())<1 ? 50 : Number($("#postsCount").val()) ;
+      SetProgress(Math.round(100 * (i/totalCount)),"正在ping：第"+(i+1)+"篇文章");
       var data ={
         "dbName":$("#dbName").val(),
         "sitemapIndex":$("#sitemapIndex:checked").val(),
@@ -267,17 +267,17 @@
         }else{
           console.log(msg);
           var now =  new Date;
-          $("#logs ul").append("<li>"+now.toLocaleTimeString()+" "+dbList[i]+" "+msg.res+" </li>" );
+          $("#logs ul").append("<li>"+now.toLocaleTimeString()+" "+msg.res+" </li>" );
           i++;
           if(i == totalCount){
             $(".modal").removeClass("modal-no-buttons").html('<div class="modal-inner"><div class="modal-text">ping完成</div></div><div class="modal-buttons "><span class="modal-button modal-button-bold">确定</span></div>'); 
             $(".modal-button").click(function(){$.hidePreloader()});
             return false;
           }
-          SetProgress(Math.round(100 * (i/totalCount)),"等待ping：第"+i+"篇文章");
-          var t = $("#timeInterval").val()==""? 600000 : $("#timeInterval").val()*600;
+          SetProgress(Math.round(100 * (i/totalCount)),"等待ping：第"+(i+1)+"篇文章");
+          var t = $("#timeInterval").val()==""? 600000 : $("#timeInterval").val()*60000;
           t = (t/2+Math.random()*t).toFixed(2);
-          //console.log(t/1000);
+          console.log(t/1000);
           setTimeout(function(){
             SubPost(i);
           },t);
