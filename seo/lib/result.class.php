@@ -45,7 +45,7 @@ class Result extends SQLite
         if (is_numeric($this->config["postsNum"])) {
             $postsNum = $this->config["postsNum"];
         }
-        $sql = 'select * from Content where pub_time < '.time().' order by id desc  limit '.$postsNum.' offset '.$page*$postsNum;
+        $sql = 'select * from Content where pub_time < '.time().' order by ID desc  limit '.$postsNum.' offset '.$page*$postsNum;
         if ($list = $this->getlist($sql)) {
             return $list;
         }else{

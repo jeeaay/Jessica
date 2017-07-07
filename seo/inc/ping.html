@@ -202,10 +202,6 @@
         });
         $("#submit").click(function (e) { 
           e.preventDefault();
-          if (!$("#sitemapIndex:checked").val()) {
-              $.alert("提交文章功能制作中");
-              return false;
-          }
           if ($("#yandex:checked").val()) {
               $.alert("yandex功能制作中");
               return false;
@@ -221,7 +217,12 @@
           $.showPreloader();
           $(".modal-text").html('<div class="progress"><div class="progress-bar" style="width: 0%;">&nbsp;</div>	</div> <p>进度：<span id="progress">0%</span></p><div class="preloader"></div>');
           $(".modal-title").html('正在ping');
-          SubDbName(0);
+          if ($("#sitemapIndex:checked").val()) {
+            SubDbName(0);
+          }else{
+            SubPost(0);
+          }
+          
           /*var data ={
             "dbName":$("#dbName").val(),
             "sitemapIndex":$("#sitemapIndex:checked").val(),
@@ -247,13 +248,49 @@
           SubDbName();*/
         });
     });
+    //选择栏目后递归提交
+    function SubPost(i){
+      SetProgress(Math.round(100 * (i/dbList.length)),"正在ping：第"+i+"篇文章");
+      var totalCount = Number($("#postsCount").val())<1 ? 50 : Number($("#postsCount").val()) ;
+      var data ={
+        "dbName":$("#dbName").val(),
+        "sitemapIndex":$("#sitemapIndex:checked").val(),
+        "postsCount":totalCount,
+        "google":$("#google:checked").val(),
+        "baidu":$("#baidu:checked").val(),
+        "yandex":$("#yandex:checked").val(),
+      };
+      $.post(location.href, data,
+        function (msg) {
+          if (msg.err) {
+          $.alert(msg.err);
+        }else{
+          console.log(msg);
+          var now =  new Date;
+          $("#logs ul").append("<li>"+now.toLocaleTimeString()+" "+dbList[i]+" "+msg.res+" </li>" );
+          i++;
+          if(i == totalCount){
+            $(".modal").removeClass("modal-no-buttons").html('<div class="modal-inner"><div class="modal-text">ping完成</div></div><div class="modal-buttons "><span class="modal-button modal-button-bold">确定</span></div>'); 
+            $(".modal-button").click(function(){$.hidePreloader()});
+            return false;
+          }
+          SetProgress(Math.round(100 * (i/totalCount)),"等待ping：第"+i+"篇文章");
+          var t = $("#timeInterval").val()==""? 600000 : $("#timeInterval").val()*600;
+          t = (t/2+Math.random()*t).toFixed(2);
+          //console.log(t/1000);
+          setTimeout(function(){
+            SubPost(i);
+          },t);
+          }
+        }
+      );
+    }
     //选择sitemapindex时递归提交数据库名
     function SubDbName(i){
       SetProgress(Math.round(100 * (i/dbList.length)),"正在ping："+dbList[i]);
       var data ={
         "dbName":dbList[i],
         "sitemapIndex":$("#sitemapIndex:checked").val(),
-        "postsCount":$("#postsCount").val(),
         "google":$("#google:checked").val(),
         "baidu":$("#baidu:checked").val(),
         "yandex":$("#yandex:checked").val(),
@@ -265,11 +302,7 @@
         }else{
           //console.log(msg);
           var now =  new Date;
-          var res = "";
-          $.each(msg.res, function (indexInArray, valueOfElement) { 
-             res = res+" "+indexInArray+":"+valueOfElement+" ";
-          });
-          $("#logs ul").append("<li>"+now.getHours()+":"+now.getMinutes()+":"+now.getSeconds()+" "+dbList[i]+" "+res+" </li>" );
+          $("#logs ul").append("<li>"+now.toLocaleTimeString()+" "+dbList[i]+" "+msg.res+" </li>" );
           i++;
           if(i == dbList.length){
             $(".modal").removeClass("modal-no-buttons").html('<div class="modal-inner"><div class="modal-text">ping完成</div></div><div class="modal-buttons "><span class="modal-button modal-button-bold">确定</span></div>'); 
@@ -279,7 +312,7 @@
           SetProgress(Math.round(100 * (i/dbList.length)),"等待ping："+dbList[i]);
           var t = $("#timeInterval").val()==""? 600000 : $("#timeInterval").val()*60000;
           t = (t/2+Math.random()*t).toFixed(2);
-          console.log(t/1000);
+          //console.log(t/1000);
           setTimeout(function(){
             SubDbName(i);
           },t);

@@ -13,29 +13,41 @@ if(isset($_POST["dbName"])){
         exit;
     }
     $url = "";
+    $res = "";
+    $site_url = 'http://'.$_SERVER['HTTP_HOST'];
     //获取sitemapindex的URL
     if($_POST["sitemapIndex"]){
         $url = "/sitemap/sitemapindex-".$config["sitemapPassword"]."-".urlencode(str_replace(" ","-",$_POST["dbName"])).".xml";
-    }else{
-        exit;
+    }else{       
     //获取文章的URL
         include CMSPATH."/lib/sqlite.class.php";
         $db = new SQLite($dbPath);
-        
+        $sql = "select * from Content where pub_time < ".time()." and is_ping <> 1 order by random() limit 1";
+        $post = $db->getlist($sql)[0];
+        $title =$post["title"];
+        if($config["keywordFileSwitch"]){
+            $title .= " ".$post["title2"];
+        }
+        $url = "/".urlencode(str_replace(" ","-",$_POST["dbName"]))."/".$post["ID"];
+        if($config["urlTitle"]){
+            $url .= "-".urlencode(str_replace(" ","-",trim($title)));
+        }
+        $url .=".html";
+        $res = 'ID: <a target="_blank" href="'.$url.'" title="'.$url.'">'.$post["ID"].'</a>';
     }
-    $site_url = 'http://'.$_SERVER['HTTP_HOST'];
     $url = $site_url.$url;
-    include CMSPATH."/lib/" . "ping.class.php";
     $ping = new Ping($config["webTitle"],$site_url,$url);
-    $res = [];
     if ($_POST["google"]) {
-        $res["google"] = $ping->google() ? "success" : "failed";
+        $res .= " google: ";
+        $res .= $ping->google() ? "success" : "failed";
     }
     if ($_POST["baidu"]) {
-        $res["baidu"] = $ping->baidu() ? "success" : "failed";
+        $res .= " baidu: ";
+        $res .= $ping->baidu() ? "success" : "failed";
     }
     if ($_POST["yandex"]) {
-        $res["yandex"] = $ping->yandex() ? "success" : "failed";
+        $res .= " yandex: ";
+        $res .= $ping->yandex() ? "success" : "failed";
     }
     echo json_encode(["err"=>NULL,"res"=>$res]);
 }else{
