@@ -5,6 +5,7 @@
  * @Last Modified by: Jeay
  * @Last Modified time: 2017-06-26 01:01:47
  */
+error_reporting(0);
 define("WEBROOT",$_SERVER['DOCUMENT_ROOT']);
 define("CMSPATH",dirname(__FILE__));
 define("TMPPATH",dirname(__FILE__)."/../templates");

@@ -131,13 +131,26 @@
                   </div>
                 </div>
               </li>
-              <li>
+              <!--<li>
                 <div class="item-content">
                   <div class="item-inner">
                     <div class="item-title label">Yandex</div>
                     <div class="item-input">
                       <label class="label-switch">
                         <input value="1" id="yandex" type="checkbox">
+                        <div class="checkbox"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </li>-->
+              <li class="bing">
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">Bing</div>
+                    <div class="item-input">
+                      <label class="label-switch">
+                        <input value="1" id="bing" type="checkbox">
                         <div class="checkbox"></div>
                       </label>
                     </div>
@@ -159,25 +172,8 @@
               </ul>
             </div>
           </div>
-          
         </div>
-        https://blogs.yandex.ru/pings/
         </div>
-        <!--<div class="modal  modal-no-buttons modal-in" style="margin-top: -78px;">
-          <div class="modal-inner">
-            <div class="modal-title">正在ping<span id="progress-title"></span></div>
-            <div class="modal-text">
-                <div class="progress">
-									<div class="progress-bar" style="width: 0%;">
-										&nbsp;</div>
-								</div>
-                <p>进度：<span id="progress">0%</span></p>
-                <div class="preloader"></div>
-            </div>
-          </div>
-          <div class="modal-buttons "></div>
-        </div>
-        <div class="modal-overlay"></div>-->
     </div>
 
     <script type='text/javascript' src='https://g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
@@ -191,8 +187,10 @@
         $(".type-switch").click(function(){
           if ($("#sitemapIndex:checked").val()) {
             $(".ping-post").hide();
+            $(".bing").show();
           }else{
             $(".ping-post").show();
+            $(".bing").hide();
           }
         });
         //选择栏目
@@ -210,7 +208,7 @@
               $.alert("请选择一个栏目");
               return false;
           }
-          if (!($("#google:checked").val() || $("#baidu:checked").val() || $("#yandex:checked").val())) {
+          if (!($("#google:checked").val() || $("#baidu:checked").val() || $("#bing:checked").val())) {
               $.alert("至少选择一个搜索引擎");
               return false;
           }
@@ -222,30 +220,6 @@
           }else{
             SubPost(0);
           }
-          
-          /*var data ={
-            "dbName":$("#dbName").val(),
-            "sitemapIndex":$("#sitemapIndex:checked").val(),
-            "postsCount":$("#postsCount").val(),
-            "google":$("#google:checked").val(),
-            "baidu":$("#baidu:checked").val(),
-            "yandex":$("#yandex:checked").val(),
-          };
-          $.post(location.href, data,
-            function (msg) {
-                if (msg.err) {
-                $.alert(msg.err);
-                }else{
-                console.log(msg);
-                }
-            }
-          );*/
-          /*$(".modal-overlay").addClass("modal-overlay-visible");
-          $(".modal").show();
-          window.postsCount = $("#postsNum").val()=="" ? 2000 : $("#postsNum").val();
-          window.progress = 0;
-          window.i = 0;
-          SubDbName();*/
         });
     });
     //选择栏目后递归提交
@@ -258,7 +232,6 @@
         "postsCount":totalCount,
         "google":$("#google:checked").val(),
         "baidu":$("#baidu:checked").val(),
-        "yandex":$("#yandex:checked").val(),
       };
       $.post(location.href, data,
         function (msg) {
@@ -293,7 +266,7 @@
         "sitemapIndex":$("#sitemapIndex:checked").val(),
         "google":$("#google:checked").val(),
         "baidu":$("#baidu:checked").val(),
-        "yandex":$("#yandex:checked").val(),
+        "bing":$("#bing:checked").val(),
       };
       $.post(location.href, data,
         function (msg) {

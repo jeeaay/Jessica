@@ -44,9 +44,7 @@ class Ping {
         return strpos($this->_post('http://ping.baidu.com/ping/RPC2', $this->method), "<int>0</int>") ? true : false;
     }
     // yandex格式错误 需要修改格式
-    public function yandex() {
+    /*public function yandex() {
         return $this->_post('http://ping.blogs.yandex.ru/RPC2', $this->method);
-    }
-    
-   
+    }*/
 }

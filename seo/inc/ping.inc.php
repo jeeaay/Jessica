@@ -17,7 +17,25 @@ if(isset($_POST["dbName"])){
     $site_url = 'http://'.$_SERVER['HTTP_HOST'];
     //获取sitemapindex的URL
     if($_POST["sitemapIndex"]){
-        $url = "/sitemap/sitemapindex-".$config["sitemapPassword"]."-".urlencode(str_replace(" ","-",$_POST["dbName"])).".xml";
+        $url = $site_url."/sitemap/sitemapindex-".$config["sitemapPassword"]."-".urlencode(str_replace(" ","-",$_POST["dbName"])).".xml";
+        if ($_POST["google"]) {
+            $res .= " google: ";
+            if( !empty(file_get_contents("https://www.google.com/webmasters/sitemaps/ping?sitemap=".$site_url)) ){
+                $res .= "success";
+                $is_ping = true;
+            }else{
+                $res .= "failed";
+            }
+        }
+        if ($_POST["bing"]) {
+            $res .= " bing: ";
+            if( !empty(file_get_contents("https://www.bing.com/webmaster/ping.aspx?siteMap=".$site_url)) ){
+                $res .= "success";
+                $is_ping = true;
+            }else{
+                $res .= "failed";
+            }
+        }
     }else{       
     //获取文章的URL
         include CMSPATH."/lib/sqlite.class.php";
@@ -37,11 +55,11 @@ if(isset($_POST["dbName"])){
         }
         $url .=".html";
         $res = 'ID: <a target="_blank" href="'.$url.'" title="'.$url.'">'.$post["ID"].'</a>';
+        $url = $site_url.$url;
     }
-    $url = $site_url.$url;
     $ping = new Ping($config["webTitle"],$site_url,$url);
     $is_ping = false;
-    if ($_POST["google"]) {
+    if ($_POST["google"] && !$_POST["sitemapIndex"]) {
         $res .= " google: ";
         if($ping->google()){
             $res .= "success";
@@ -50,6 +68,7 @@ if(isset($_POST["dbName"])){
             $res .= "failed";
         }
     }
+    
     if ($_POST["baidu"]) {
         $res .= " baidu: ";
         if($ping->baidu()){
@@ -59,16 +78,8 @@ if(isset($_POST["dbName"])){
             $res .= "failed";
         }
     }
-    if ($_POST["yandex"]) {
-        $res .= " yandex: ";
-        if($ping->yandex()){
-            $res .= "success";
-            $is_ping = true;
-        }else{
-            $res .= "failed";
-        }
-    }
-    if($is_ping){
+    
+    if($is_ping && !$_POST["sitemapIndex"]){
         $sql = "update Content set is_ping = 1 where ID = ".$post["ID"];
         $db->query($sql);
     }
