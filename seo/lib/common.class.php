@@ -45,17 +45,18 @@ class Common
 	public static function TxtReplace($str){
 		//$str=$this->resFilter($str);
 		$changeTxt = file_get_contents ( WEBROOT."/data/replace.txt" );
+		
 		$arrChangeTxt = preg_split ( '/[\n]+/', trim ( $changeTxt ) );
+		
 		$arr_preg = "";
 		foreach ( $arrChangeTxt as $value ) {
 			$arr_preg = preg_split ( '/->/', trim ( $value ) );
-			$arr_preg [0]=str_replace("/", "\/", $arr_preg [0]);
-			$arr_preg [0]=str_replace("[", "\[", $arr_preg [0]);
-			$arr_preg [0]=str_replace(".", "\.", $arr_preg [0]);
-			$arr_preg [0]=str_replace("*", "\*", $arr_preg [0]);
-			$arr_preg [0]=str_replace("+", "\+", $arr_preg [0]);
-			$arr_preg [0]=str_replace("|", "\|", $arr_preg [0]);
-			$arr_preg [0]="/\b".$arr_preg [0]."\b/i";
+
+			$find = ["/","[",".","*","+","|","'","?"];
+			$repl = ["\/","\[","\.","\*","\+","\|","\'","\?"];
+			$arr_preg [0]=trim(str_replace($find, $repl, $arr_preg [0]));
+
+			$arr_preg [0]="/".trim( $arr_preg [0] )."/i";
 			$str = preg_replace ( $arr_preg [0], trim ( $arr_preg [1] ), $str );
 		}
 		return $str;
