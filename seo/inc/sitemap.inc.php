@@ -23,9 +23,12 @@ if (isset($_POST["postsCount"])) {
         $sitemap = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
         if ($config["urlTitle"]) {
             foreach($postList as $v){
-                $sitemap.="<url><loc>http://".$_SERVER ['HTTP_HOST']."/{$cateUrl}/{$v["ID"]}-".urlencode(str_replace(" ","-",$v["title"]))."-".urlencode(str_replace(" ","-",$v["title2"])).".html</loc></url>\n";
-                
-            }
+                $sitemap.="<url><loc>http://".$_SERVER ['HTTP_HOST']."/{$cateUrl}/{$v["ID"]}-".urlencode(str_replace(" ","-",$v["title"]));
+            	if($config["keywordFileSwitch"]){
+			$sitemap.="-".urlencode(str_replace(" ","-",$v["title2"]));
+		}
+		$sitemap.=".html</loc></url>\n";
+	    }
         }else{
             foreach($postList as $v){
                 $sitemap.="<url><loc>http://".$_SERVER ['HTTP_HOST']."/{$cateUrl}/{$v["ID"]}.html</loc></url>\n";
