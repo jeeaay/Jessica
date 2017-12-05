@@ -54,6 +54,19 @@
                   </div>
                 </div>
               </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">生成sitemap.xml</div>
+                    <div class="item-input">
+                      <label class="label-switch">
+                        <input value="1" id="sitemap" type="checkbox">
+                        <div class="checkbox"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </li>
             </ul>
           </div>
           <div class="content-block">
@@ -104,9 +117,24 @@
       function SubDbName(){
         //递归完成
         if(i == allDbs.length){
-          $(".modal").removeClass("modal-no-buttons").html('<div class="modal-inner"><div class="modal-text">生成成功</div></div><div class="modal-buttons "><span class="modal-button modal-button-bold">确定</span></div>'); 
-          $(".modal-button").click(function(){window.location.href="/"});
-          return false;
+          if ($("#sitemap:checked").val()) {
+            $.post(location.href, {"sitemap":$("#sitemap:checked").val()},
+              function (msg) {
+                if (msg.err) {
+                  $.alert(msg.err);
+                }else{
+                  $(".modal").removeClass("modal-no-buttons").html('<div class="modal-inner"><div class="modal-text">生成成功</div></div><div class="modal-buttons "><span class="modal-button modal-button-bold">确定</span></div>'); 
+                  $(".modal-button").click(function(){window.location.href="/"});
+                  return false;
+                }
+              }
+            );
+          }else{
+            $(".modal").removeClass("modal-no-buttons").html('<div class="modal-inner"><div class="modal-text">生成成功</div></div><div class="modal-buttons "><span class="modal-button modal-button-bold">确定</span></div>'); 
+            $(".modal-button").click(function(){window.location.href="/"});
+            return false;
+          }
+          
         }
         var data = {
           "postsCount":postsCount,
