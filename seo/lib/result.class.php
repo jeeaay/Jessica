@@ -158,7 +158,7 @@ class Result extends SQLite
             $getPostsFrom = WEBROOT."/data/".str_replace("-"," ",urldecode($cate)).".db";
             parent::__construct($this->dbPath);
         }
-        $sql = 'select * from Content order by random() where pub_time < '.time().' limit '.$count;
+        $sql = 'select * from Content where pub_time < '.time().' order by random() limit '.$count;
         if ($list = $this->getlist($sql)) {
             return $list;
         }
