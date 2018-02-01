@@ -158,11 +158,9 @@ class Result extends SQLite
             $getPostsFrom = WEBROOT."/data/".str_replace("-"," ",urldecode($cate)).".db";
             parent::__construct($this->dbPath);
         }
-        $sql = 'select * from Content order by random() limit '.$count.'where pub_time < '.time();
+        $sql = 'select * from Content order by random() where pub_time < '.time().' limit '.$count;
         if ($list = $this->getlist($sql)) {
             return $list;
-        }else{
-            Common::NotFound();
         }
     }
     // 获取附加的随机标题
