@@ -10,7 +10,11 @@
 <script src="/default/img/top.js"></script>
   <div id="content">
 
-
+    <ul class="randpost" >
+      <?php foreach(GetCatesRandPost() as $v) {?>
+      <li><a href="<?=$v['url']?>"><?=$v['title']?></a></li>
+      <?php }?>
+    </ul> 
 
     <div id="sidebar">
       <script src="/default/img/sidebar.js"></script>
@@ -18,11 +22,7 @@
             
                 <ul>
                 <?php foreach($result->GetRandPosts() as $v) { ?>
-                  <li>
-                    <a href="<?=$v['ID']?><?php if($config['urlTitle']){echo "-".urlencode(str_replace(" ","-",$v['title'].$result->getSubtitle($v['ID'])));}?>.html">
-                      <?=$v['title']?> <?=$result->getSubtitle($v['ID'])?>
-                    </a>
-                  </li>
+                  <li><a href="<?=$v['url']?>"><?=$v['title']?></a></li>
                 <?php } ?>
                 </ul>
     </div>
