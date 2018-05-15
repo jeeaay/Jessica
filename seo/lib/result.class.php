@@ -52,8 +52,8 @@ class Result extends SQLite
                 if($this->config["urlTitle"]){
                     $url .= $value['ID'].'-'.urlencode(str_replace(" ","-",$value['title']));
                     if ($this->config["keywordFileSwitch"]) {
-                        $url .="-".urlencode(str_replace(" ","-",$value['title2']));
-                        $list[$key]['title'] .= " ".$value['title2'];
+                        $url = trim($url."-".urlencode(str_replace(" ","-",$value['title2'])),'-');
+                        $list[$key]['title'] = trim($list[$key]['title']." ".$value['title2']);
                         // 为了兼容旧调用方式
                         $list[$key]['title2'] .= "";
                     }
@@ -175,6 +175,21 @@ class Result extends SQLite
         }
         $sql = 'select * from Content'. ' where pub_time < '.time() . ' order by random() limit '.$count;
         if ($list = $this->getlist($sql)) {
+            foreach ($list as $key => $value) {
+                $url = '';
+                if($this->config["urlTitle"]){
+                    $url .= $value['ID'].'-'.urlencode(str_replace(" ","-",$value['title']));
+                    if ($this->config["keywordFileSwitch"]) {
+                        $url = trim($url."-".urlencode(str_replace(" ","-",$value['title2'])),'-');
+                        $list[$key]['title'] = trim($list[$key]['title']." ".$value['title2']);
+                        // 为了兼容旧调用方式
+                        $list[$key]['title2'] .= "";
+                    }
+                }else{
+                    $url .= $value['ID'];
+                }
+                $list[$key]['url'] = $url.'.html';
+            }
             return $list;
         }else{
             Common::NotFound();
