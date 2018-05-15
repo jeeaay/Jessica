@@ -17,6 +17,7 @@ function __autoload($className) {
 if (file_exists(WEBROOT."/config.php")) {
     //加载配置文件
     include WEBROOT."/config.php";
+    
     //生成sitemap
     if (isset($_GET[$config["sitemapPassword"]])) {
         require CMSPATH."/inc/sitemap.inc.php";
@@ -66,3 +67,31 @@ if (file_exists(WEBROOT."/config.php")) {
     include CMSPATH."/inc/install.inc.php";
 }
 
+function GetCatesRandPost($count = 5)
+{
+    global $config;
+    $randlist = [];
+    foreach ($config["cateTitle"] as $dbname => $c) {
+        $db = new SQLite(WEBROOT."/data".'/'.$dbname.'.db');
+        $sql = 'select * from Content'. ' where pub_time < '.time() . ' order by random() limit '.$count;
+        $list = $db->getlist($sql);
+        foreach ($list as $key => $value) {
+            $url = '/'.urlencode(str_replace(" ","-",$dbname)).'/';
+            if($config["urlTitle"]){
+                $url .= $value['ID'].'-'.urlencode(str_replace(" ","-",$value['title']));
+                if ($config["keywordFileSwitch"]) {
+                    $url .="-".urlencode(str_replace(" ","-",$value['title2']));
+                    $list[$key]['title'] .= " ".$value['title2'];
+                    // 为了兼容旧调用方式
+                    $list[$key]['title2'] .= "";
+                }
+            }else{
+                $url .= $value['ID'];
+            }
+            $list[$key]['url'] = $url.'.html';
+        }
+        $randlist = array_merge($randlist, $list);
+    }
+    shuffle($randlist);
+    return $randlist;
+}
