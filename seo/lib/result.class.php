@@ -47,6 +47,21 @@ class Result extends SQLite
         }
         $sql = 'select * from Content where pub_time < '.time().' order by id desc  limit '.$postsNum.' offset '.$page*$postsNum;
         if ($list = $this->getlist($sql)) {
+            foreach ($list as $key => $value) {
+                $url = '';
+                if($this->config["urlTitle"]){
+                    $url .= $value['ID'].'-'.urlencode(str_replace(" ","-",$value['title']));
+                    if ($this->config["keywordFileSwitch"]) {
+                        $url .="-".urlencode(str_replace(" ","-",$value['title2']));
+                        $list[$key]['title'] .= " ".$value['title2'];
+                        // 为了兼容旧调用方式
+                        $list[$key]['title2'] .= "";
+                    }
+                }else{
+                    $url .= $value['ID'];
+                }
+                $list[$key]['url'] = $url.'.html';
+            }
             return $list;
         }else{
             Common::NotFound();
@@ -158,7 +173,7 @@ class Result extends SQLite
             $getPostsFrom = WEBROOT."/data/".str_replace("-"," ",urldecode($cate)).".db";
             parent::__construct($this->dbPath);
         }
-        $sql = 'select * from Content order by random() limit '.$count.'where pub_time < '.time();
+        $sql = 'select * from Content'. ' where pub_time < '.time() . ' order by random() limit '.$count;
         if ($list = $this->getlist($sql)) {
             return $list;
         }else{
