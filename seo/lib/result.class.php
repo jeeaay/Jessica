@@ -52,8 +52,8 @@ class Result extends SQLite
                 if($this->config["urlTitle"]){
                     $url .= $value['ID'].'-'.urlencode(str_replace(" ","-",$value['title']));
                     if ($this->config["keywordFileSwitch"]) {
-                        $url .="-".urlencode(str_replace(" ","-",$value['title2']));
-                        $list[$key]['title'] .= " ".$value['title2'];
+                        $url = trim($url."-".urlencode(str_replace(" ","-",$value['title2'])),'-');
+                        $list[$key]['title'] = trim($list[$key]['title']." ".$value['title2']);
                         // 为了兼容旧调用方式
                         $list[$key]['title2'] .= "";
                     }
@@ -180,8 +180,8 @@ class Result extends SQLite
                 if($this->config["urlTitle"]){
                     $url .= $value['ID'].'-'.urlencode(str_replace(" ","-",$value['title']));
                     if ($this->config["keywordFileSwitch"]) {
-                        $url .="-".urlencode(str_replace(" ","-",$value['title2']));
-                        $list[$key]['title'] .= " ".$value['title2'];
+                        $url = trim($url."-".urlencode(str_replace(" ","-",$value['title2'])),'-');
+                        $list[$key]['title'] = trim($list[$key]['title']." ".$value['title2']);
                         // 为了兼容旧调用方式
                         $list[$key]['title2'] .= "";
                     }
