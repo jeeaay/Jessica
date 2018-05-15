@@ -118,6 +118,7 @@
                   </div>
                 </div>
               </li>
+              </li>
               <div class="content-block" style="margin:0">
                 <p style="margin-bottom: 0">设置各栏目的标题（不填则与数据库名相同）：</p>
               </div>
@@ -222,7 +223,7 @@
               if(data.err){
                 $.alert(data.msg);
               }else{
-                $.alert(data.msg,function () {window.location.href="/?"+data.sitemap});
+                $.alert(data.msg,function () {window.location.href="./?"+data.sitemap});
               }              
             }
           );

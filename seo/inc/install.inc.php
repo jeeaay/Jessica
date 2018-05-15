@@ -26,11 +26,11 @@
                 echo json_encode(["err"=>"标题不能为空！"]);
                 exit;
             }
-            $post["webTitle"] = str_replace("'","\\'",trim($_POST["webTitle"])) ;
+            $post["webTitle"] = trim($_POST["webTitle"]);
             //关键词
-            $post["indexKeyword"] = empty(trim($_POST["indexKeyword"])) ? "false" : "'".str_replace("'","\\'",trim($_POST["indexKeyword"]))."'"; 
+            $post["indexKeyword"] = empty(trim($_POST["indexKeyword"])) ? "false" : "'".trim($_POST["indexKeyword"])."'"; 
             //描述
-            $post["indexDescription"] = empty(trim($_POST["indexDescription"])) ? "false" : "'".str_replace("'","\\'",trim($_POST["indexDescription"]))."'";
+            $post["indexDescription"] = empty(trim($_POST["indexDescription"])) ? "false" : "'".trim($_POST["indexDescription"])."'";
             //每页文章数
             $post["postsNum"] = empty($_POST["postsNum"]) ? 20 : (int)trim($_POST["postsNum"]);
             //模板
