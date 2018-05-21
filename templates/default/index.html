@@ -120,7 +120,11 @@
                 <h3>Category</h3>               
                           
 
-   
+                <ul class="randpost" >
+                    <?php foreach(GetCatesRandPost() as $v) {?>
+                    <li><a href="<?=$v['url']?>"><?=$v['title']?></a></li>
+                    <?php }?>
+                </ul> 
 
     
         <ul class="expornew" >
