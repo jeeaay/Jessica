@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ping</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="https://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="https://g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+    <style>
+        .buttons .button.active {background-color: #0894ec;color: #fff;z-index: 90;}
+        .buttons .button{margin:1px}
+        .progress-bar {
+            color: #fff;
+            float: left;
+            background-color: #0a0;
+            display: inline-block;
+            font-size: 12px;
+            line-height: 14px;
+            text-align: center;
+        }
+        .progress .progress-bar:last-child {
+            border-radius: 0 7px 7px 0;
+        }
+        .progress {
+            height: 14px;
+            overflow: hidden;
+            background-color: #f5f5f5;
+            border-radius: 7px;
+            -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+            box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+        }
+        .modal{width: 20rem;margin-left: -10rem;}
+    </style>
+  </head>
+  <body>
+    <div class="page-group">
+        <div class="page page-current" style="max-width: 760px;margin: 0 auto;">
+        <header class="bar bar-nav">
+          <h1 class='title'>Ping</h1>
+        </header>
+        <div class="content">
+          <div class="list-block">
+            <ul>
+              <li class="type-switch">
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">提交sitemapindex</div>
+                    <div class="item-input">
+                      <label class="label-switch">
+                        <input value="1" checked id="sitemapIndex" type="checkbox">
+                        <div class="checkbox"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="ping-post">
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">选择一个栏目</div>
+                    <div class="item-input">
+                      <input id="dbName" type="text" placeholder="点击下面选取一个栏目">
+                    </div>
+                  </div>
+                </div>
+                <div class="content-block" style="margin:0">
+                  <p class="buttons" style="margin:0;display: flex;flex-wrap: wrap;">
+                    <?php 
+                    if(is_array($dbList) && !empty($dbList)){
+                      foreach ($dbList as $value){ 
+                    ?>
+                    <a href="#" class="button select-db"><?=$value?></a>
+                    <?php } 
+                    }else{
+                    ?>
+                    请先检查是否已经上传数据
+                    <?php
+                    }
+                    ?>
+                  </p>
+                </div>
+              </li>
+              <li class="ping-post">
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">文章数量</div>
+                    <div class="item-input">
+                      <input id="postsCount" type="text" placeholder="请选择本次提交的文章数量,默认50">
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">时间间隔（分钟）</div>
+                    <div class="item-input">
+                      <input id="timeInterval" type="text" placeholder="平均时间间隔，默认10分钟，将会上下浮动50%">
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">Google</div>
+                    <div class="item-input">
+                      <label class="label-switch">
+                        <input value="1" id="google" type="checkbox">
+                        <div class="checkbox"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">Baidu</div>
+                    <div class="item-input">
+                      <label class="label-switch">
+                        <input value="1" id="baidu" type="checkbox">
+                        <div class="checkbox"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <!--<li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">Yandex</div>
+                    <div class="item-input">
+                      <label class="label-switch">
+                        <input value="1" id="yandex" type="checkbox">
+                        <div class="checkbox"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </li>-->
+              <li class="bing">
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">Bing</div>
+                    <div class="item-input">
+                      <label class="label-switch">
+                        <input value="1" id="bing" type="checkbox">
+                        <div class="checkbox"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+            </ul>
+          </div>
+          <div class="content-block">
+            <div class="row">
+              <div class="col-50"><a id="submit" href="#" class="button button-big button-fill button-success">提交</a></div>
+              <div class="col-50"><a href="#" class="button button-big button-fill button-danger">取消</a></div>
+            </div>
+          </div>
+          <div id="logs" class="content-block">
+            <div class="list-block">
+              <ul>
+              </ul>
+            </div>
+          </div>
+        </div>
+        </div>
+    </div>
+
+    <script type='text/javascript' src='https://g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='https://g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='https://g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+    <script>
+      var dbList = <?=json_encode($dbList);?>;
+    $(function () {
+        //隐藏文章数量
+        $(".ping-post").hide();
+        $(".type-switch").click(function(){
+          if ($("#sitemapIndex:checked").val()) {
+            $(".ping-post").hide();
+            $(".bing").show();
+          }else{
+            $(".ping-post").show();
+            $(".bing").hide();
+          }
+        });
+        //选择栏目
+        $(".select-db").click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+            $("#dbName").val($(this).html());
+        });
+        $("#submit").click(function (e) { 
+          e.preventDefault();
+          if ($("#yandex:checked").val()) {
+              $.alert("yandex功能制作中");
+              return false;
+          }
+          if (!$("#dbName").val() && !$("#sitemapIndex:checked").val()) {
+              $.alert("请选择一个栏目");
+              return false;
+          }
+          if (!($("#google:checked").val() || $("#baidu:checked").val() || $("#bing:checked").val())) {
+              $.alert("至少选择一个搜索引擎");
+              return false;
+          }
+          $.showPreloader();
+          $(".modal-text").html('<div class="progress"><div class="progress-bar" style="width: 0%;">&nbsp;</div>	</div> <p>进度：<span id="progress">0%</span></p><div class="preloader"></div>');
+          $(".modal-title").html('正在ping');
+          if ($("#sitemapIndex:checked").val()) {
+            SubDbName(0);
+          }else{
+            SubPost(0);
+          }
+        });
+    });
+    //选择栏目后递归提交
+    function SubPost(i){
+      var totalCount = Number($("#postsCount").val())<1 ? 50 : Number($("#postsCount").val()) ;
+      SetProgress(Math.round(100 * (i/totalCount)),"正在ping：第"+(i+1)+"篇文章");
+      var data ={
+        "dbName":$("#dbName").val(),
+        "sitemapIndex":$("#sitemapIndex:checked").val(),
+        "postsCount":totalCount,
+        "google":$("#google:checked").val(),
+        "baidu":$("#baidu:checked").val(),
+      };
+      $.post(location.href, data,
+        function (msg) {
+          if (msg.err) {
+          $.alert(msg.err);
+        }else{
+          console.log(msg);
+          var now =  new Date;
+          $("#logs ul").append("<li>"+now.toLocaleTimeString()+" "+msg.res+" </li>" );
+          i++;
+          if(i == totalCount){
+            $(".modal").removeClass("modal-no-buttons").html('<div class="modal-inner"><div class="modal-text">ping完成</div></div><div class="modal-buttons "><span class="modal-button modal-button-bold">确定</span></div>'); 
+            $(".modal-button").click(function(){$.hidePreloader()});
+            return false;
+          }
+          SetProgress(Math.round(100 * (i/totalCount)),"等待ping：第"+(i+1)+"篇文章");
+          var t = $("#timeInterval").val()==""? 600000 : $("#timeInterval").val()*60000;
+          t = (t/2+Math.random()*t).toFixed(2);
+          console.log(t/1000);
+          setTimeout(function(){
+            SubPost(i);
+          },t);
+          }
+        }
+      );
+    }
+    //选择sitemapindex时递归提交数据库名
+    function SubDbName(i){
+      SetProgress(Math.round(100 * (i/dbList.length)),"正在ping："+dbList[i]);
+      var data ={
+        "dbName":dbList[i],
+        "sitemapIndex":$("#sitemapIndex:checked").val(),
+        "google":$("#google:checked").val(),
+        "baidu":$("#baidu:checked").val(),
+        "bing":$("#bing:checked").val(),
+      };
+      $.post(location.href, data,
+        function (msg) {
+          if (msg.err) {
+          $.alert(msg.err);
+        }else{
+          //console.log(msg);
+          var now =  new Date;
+          $("#logs ul").append("<li>"+now.toLocaleTimeString()+" "+dbList[i]+" "+msg.res+" </li>" );
+          i++;
+          if(i == dbList.length){
+            $(".modal").removeClass("modal-no-buttons").html('<div class="modal-inner"><div class="modal-text">ping完成</div></div><div class="modal-buttons "><span class="modal-button modal-button-bold">确定</span></div>'); 
+            $(".modal-button").click(function(){$.hidePreloader()});
+            return false;
+          }
+          SetProgress(Math.round(100 * (i/dbList.length)),"等待ping："+dbList[i]);
+          var t = $("#timeInterval").val()==""? 600000 : $("#timeInterval").val()*60000;
+          t = (t/2+Math.random()*t).toFixed(2);
+          //console.log(t/1000);
+          setTimeout(function(){
+            SubDbName(i);
+          },t);
+          }
+        }
+      );
+    }
+
+    /*  //递归提交数据库名
+    function SubDbName(){
+        //递归完成
+        if(i == allDbs.length){
+            $(".modal").removeClass("modal-no-buttons").html('<div class="modal-inner"><div class="modal-text">生成成功</div></div><div class="modal-buttons "><span class="modal-button modal-button-bold">确定</span></div>'); 
+            $(".modal-button").click(function(){window.location.href="/"});
+            return false;
+        }
+        var data = {
+            "postsCount":postsCount,
+            "dbName":allDbs[i]
+        };
+        $.post(location.href, data,
+            function (msg) {
+                if (msg.err) {
+                $.alert(msg.err);
+                }else{
+                progress = progress + 100 * (1/allDbs.length) * (1/(msg.totalPage+1) );
+                SetProgress(Math.round(progress),allDbs[i] +" SitemapIndex");
+                //总页数
+                window.totalPage = msg.totalPage;
+                SubPage(0);
+                }
+            }
+        );
+        
+      }*/
+      
+      //设置进度条
+    function SetProgress(progress,title){
+        $(".modal-title").html(title);
+        $("#progress").html(progress+"%");
+        $(".progress-bar").width(progress+"%");
+    }
+
+    </script>
+  </body>
+</html>
