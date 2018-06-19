@@ -76,7 +76,14 @@ function GetCatesRandPost($count = 5)
 {
     global $config;
     $randlist = [];
-    foreach ($config["cateTitle"] as $dbname => $c) {
+    $cname = $config["cateTitle"];
+    shuffle($cname);
+    $i = 0;
+    foreach ($cname as $dbname => $c) {
+        if ($i == 3) {
+            break;
+        }
+        $i ++;
         $db = new SQLite(WEBROOT."/data".'/'.$dbname.'.db');
         $sql = 'select * from Content'. ' where pub_time < '.time() . ' order by random() limit '.$count;
         $list = $db->getlist($sql);
