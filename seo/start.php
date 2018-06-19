@@ -77,9 +77,14 @@ function GetCatesRandPost($count = 5)
     global $config;
     $randlist = [];
     $cname = $config["cateTitle"];
-    shuffle($cname);
+    $cname_keys = array_keys($cname);
+    shuffle($cname_keys);
+    $ncname = [];
+    foreach ($cname_keys as $k) {
+        $ncname[$k] = $cname[$k];
+    }
     $i = 0;
-    foreach ($cname as $dbname => $c) {
+    foreach ($ncname as $dbname => $c) {
         if ($i == 3) {
             break;
         }
