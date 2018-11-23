@@ -20,7 +20,7 @@ if(isset($_POST["dbName"])){
         $url = $site_url."/sitemap/sitemapindex-".$config["sitemapPassword"]."-".urlencode(str_replace(" ","-",$_POST["dbName"])).".xml";
         if ($_POST["google"]) {
             $res .= " google: ";
-            if( !empty(file_get_contents("https://www.google.com/webmasters/sitemaps/ping?sitemap=".$site_url)) ){
+            if( !empty(file_get_contents("https://www.google.com/webmasters/sitemaps/ping?sitemap=".$url)) ){
                 $res .= "success";
                 $is_ping = true;
             }else{
@@ -29,7 +29,7 @@ if(isset($_POST["dbName"])){
         }
         if ($_POST["bing"]) {
             $res .= " bing: ";
-            if( !empty(file_get_contents("https://www.bing.com/webmaster/ping.aspx?siteMap=".$site_url)) ){
+            if( !empty(file_get_contents("https://www.bing.com/webmaster/ping.aspx?siteMap=".$url)) ){
                 $res .= "success";
                 $is_ping = true;
             }else{
